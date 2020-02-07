@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { GameEngine } from 'react-native-game-engine';
 
 export default function App() {
   return (
