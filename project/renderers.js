@@ -1,28 +1,40 @@
-import React, { PureComponent } from "react";
-import { StyleSheet, View } from "react-native";
+// handles visually rendering objs -- goes in ret statement of render in App.js
 
-const RADIUS = 20;
+import React, { Component } from "react";
+import { Animated } from "react-native";
+import char from "./assets/char_head_1.png"
 
-class Finger extends PureComponent {
+class Character extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
-    const x = this.props.position[0] - RADIUS / 2;
-    const y = this.props.position[1] - RADIUS / 2;
+    // sets characters dimensions for being rendered
+    const width = this.props.size[0];
+    const height = this.props.size[1];
+    const x = this.props.body.position.x - width / 2;
+    const y = this.props.body.position.y - height / 2;
+    let image = char;
+   
     return (
-      <View style={[styles.finger, { left: x, top: y }]} />
+      // can be animated when random movement is figured out -- one img for now
+      <Animated.Image
+        style={
+          { 
+            position: "absolute",
+            left: x,
+            top: y,
+            width: width,
+            height: height
+          }
+        }
+        source={image}
+      />
     );
   }
 }
 
-const styles = StyleSheet.create({
-  finger: {
-    borderColor: "#CCC",
-    borderWidth: 4,
-    borderRadius: RADIUS * 2,
-    width: RADIUS * 2,
-    height: RADIUS * 2,
-    backgroundColor: "pink",
-    position: "absolute"
-  }
-});
-
-export { Finger };
+export {
+  Character
+};
