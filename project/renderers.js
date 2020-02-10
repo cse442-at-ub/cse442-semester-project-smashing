@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 import { Animated } from "react-native";
-import char from "./assets/char_head_1.png"
+import char from "./assets/char_head_1.gif"
 
 class Character extends Component {
   constructor(props) {

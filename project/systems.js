@@ -1,8 +1,10 @@
 
 // handles all physics-based events of the app.
-
+import React, { Component } from "react";
 import _ from "lodash";
-import Matter from "matter-js";
+import Matter, { Body } from "matter-js";
+
+let frame = 0;
 
 const distance = ([x1, y1], [x2, y2]) =>
 	Math.sqrt(Math.abs(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)));
@@ -10,11 +12,36 @@ const distance = ([x1, y1], [x2, y2]) =>
 // initializes and updates physics engine
 const Physics = (state, { touches, time }) => {
 	let engine = state["physics"].engine;
+	++frame;
 
 	Matter.Engine.update(engine, time.delta);
 
 	return state;
 };
+
+// random wandering for character
+const RandMove = (entities) => {
+	// every 300 frames, chance to move
+	if (frame % 200 === 0) {
+		// if num between 1 and 9 is 6 or lower
+		if (Math.floor(Math.random() * 10) <= 6) {
+			// random sign for x and y
+			let xsign = Math.round(Math.random()) * 2 - 1;
+			let ysign = Math.round(Math.random()) * 2 - 1;
+			// move character with random magnitude on x and y
+			Body.applyForce(entities.character.body,
+				{
+					x: entities.character.body.position.x,
+					y: entities.character.body.position.y
+				},
+				{
+					x: (Math.floor(Math.random() * 6)) / 100 * xsign,
+					y: (Math.floor(Math.random() * 6)) / 100 * ysign
+				});
+		}
+	}
+	return entities;
+}
 
 // from handbook "rigid bodies", allows dragging of character
 const MoveBox = (state, { touches }) => {
@@ -62,4 +89,4 @@ const MoveBox = (state, { touches }) => {
 	return state;
 };
 
-export { Physics, MoveBox };
+export { Physics, MoveBox, RandMove };

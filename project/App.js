@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { StatusBar, StyleSheet, Dimensions } from "react-native";
 import { GameEngine } from "react-native-game-engine";
-import { Physics, MoveBox } from "./systems";
+import { Physics, MoveBox, RandMove } from "./systems";
 import { Character } from "./renderers";
 import Matter from "matter-js";
 
@@ -22,7 +22,7 @@ export default class RigidBodies extends Component {
     const world = engine.world;
 
     // connected to "Character" class
-    const body = Matter.Bodies.rectangle(width/2, height/2, boxSize, boxSize, { frictionAir: 0.2 });
+    const body = Matter.Bodies.rectangle(width/2, height/2, boxSize, boxSize, { frictionAir: 0.04 });
     world.gravity.y = 0;
 
     // Creates boundaries that character can't pass through
@@ -49,7 +49,7 @@ export default class RigidBodies extends Component {
       // builds game world -- renders physics objects
       <GameEngine
         style={styles.container}
-        systems={[Physics, MoveBox]}
+        systems={[Physics, MoveBox, RandMove]}
         entities={{
           physics: { engine: engine, world: world, constraint: constraint },
           character: { body: body, size: [boxSize, boxSize], renderer: Character },
