@@ -5,6 +5,7 @@ import EStyleSheet from "react-native-extended-stylesheet";
 import TableOfContents from "./app/table-of-contents";
 import Start from "./app/start";
 import LeaderBoards from "./app/leaderboards";
+import FriendsList from "./app/friendslist";
 
 
 
@@ -43,6 +44,8 @@ export default class App extends Component {
             items: [
               Start(this.mountScene),
               LeaderBoards(this.mountScene),
+	      FriendsList(this.mountScene),
+
             ]
           }}
         />
