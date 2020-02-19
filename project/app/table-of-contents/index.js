@@ -47,7 +47,7 @@ export default class TableOfContents extends Component {
           <StatusBar hidden={true} barStyle={"light-content"} />
           <ScrollView contentContainerStyle={css.container}>
 
-            {/* <Image style={css.logo} source={Logo} /> */}
+            <Image style={css.logo} source={Logo} />
             <View
               style={[
                 css.headingContainer,
