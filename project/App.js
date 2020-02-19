@@ -4,6 +4,8 @@ import BackButton from "./app/table-of-contents/backbutton";
 import EStyleSheet from "react-native-extended-stylesheet";
 import TableOfContents from "./app/table-of-contents";
 import Start from "./app/start";
+import LeaderBoards from "./app/leaderboards";
+
 
 
 EStyleSheet.build();
@@ -40,6 +42,7 @@ export default class App extends Component {
             heading: "Smashing",
             items: [
               Start(this.mountScene),
+              LeaderBoards(this.mountScene),
             ]
           }}
         />
