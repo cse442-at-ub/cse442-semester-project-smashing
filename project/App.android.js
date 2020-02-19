@@ -37,7 +37,7 @@ export default class App extends Component {
         <TableOfContents
           sceneVisible={this.state.sceneVisible}
           contents={{
-            heading: "Smashing",
+            heading: " ",
             items: [
               Start(this.mountScene),
             ]
