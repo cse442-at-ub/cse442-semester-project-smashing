@@ -6,6 +6,7 @@ import TableOfContents from "./app/table-of-contents";
 import Start from "./app/start";
 import LeaderBoards from "./app/leaderboards";
 import FriendsList from "./app/friendslist";
+import ItemShop from "./app/itemshop";
 
 
 
@@ -44,7 +45,9 @@ export default class App extends Component {
             items: [
               Start(this.mountScene),
               LeaderBoards(this.mountScene),
-	      FriendsList(this.mountScene),
+	            FriendsList(this.mountScene),
+              ItemShop(this.mountScene),
+
 
             ]
           }}
