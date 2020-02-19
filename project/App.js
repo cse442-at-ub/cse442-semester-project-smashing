@@ -7,6 +7,8 @@ import Start from "./app/start";
 import LeaderBoards from "./app/leaderboards";
 import FriendsList from "./app/friendslist";
 import ItemShop from "./app/itemshop";
+import Stats from "./app/stats";
+
 
 
 
@@ -47,8 +49,7 @@ export default class App extends Component {
               LeaderBoards(this.mountScene),
 	            FriendsList(this.mountScene),
               ItemShop(this.mountScene),
-
-
+              Stats(this.mountScene),
             ]
           }}
         />
