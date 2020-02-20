@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View ,FlatList ,StyleSheet} from 'react-native';
+import { Text, View ,StyleSheet} from 'react-native';
 import { LinearGradient } from "expo";
-import Button from 'react-bootstrap/Button';
 
 
 
@@ -16,14 +15,28 @@ export default class CalorieCounter extends Component {
         colors={["#4AC29A", "#BDFFF3"]}
         style={css.linearGradient}
       >
-      <View>
-      <Text style = {css.item}>Calories Counter :</Text>
-      <View style={{flex: 2, backgroundColor: 'skyblue'}} />
-      <View style={{flex: 3, backgroundColor: 'steelblue'}} />
-      <Button variant="secondary" size="sm">
-      Small button
-      </Button>
+      <View style = {css.header}>
+      <LinearGradient
+        colors={["#4AC29A", "#BDFFF3"]}
+        style={css.linearGradient2}
+      >
+       <Text style = {css.topfont}>Calories Counter</Text>
+       </LinearGradient>
       </View>
+
+      <View style = {css.lower}>
+      <LinearGradient
+        colors={["#4AC29F", "#BDFFFF"]}
+        style={css.linearGradient2}
+      >
+
+
+
+
+        
+      </LinearGradient>
+      </View>
+
       </LinearGradient>
     );
   }
@@ -32,14 +45,38 @@ export default class CalorieCounter extends Component {
 
 
 const css = StyleSheet.create({
+
   linearGradient: {
     flex: 1,
-    alignItems: "center",
   },
-  item:{
-    color: "blue",
+  linearGradient2: {
+    flex: 1,
+    borderRadius: 20,
+  },
+  header: {
+    flexBasis: 60,
+    borderWidth: 3,
+    borderColor: 'green',
+    height: 18,
+    margin: 45,
+    borderRadius: 20,
+  },
+  topfont: {
+      justifyContent: "center",
+      alignItems: "center",
+      fontSize: 35,
+      color: 'black',
+      
+  },
+  lower: {
+    flexBasis: 375,
+    borderWidth: 3,
+    borderColor: 'green',
+    height: 20,
+    margin: 40,
     justifyContent: "center",
-    fontSize: 32,
-       
+    borderRadius: 20,
   },
+
+
 });
