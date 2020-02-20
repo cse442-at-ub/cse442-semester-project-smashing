@@ -8,6 +8,7 @@ import LeaderBoards from "./app/leaderboards";
 import FriendsList from "./app/friendslist";
 import ItemShop from "./app/itemshop";
 import Stats from "./app/stats";
+import CalorieCounter from "./app/caloriecounter"
 
 
 
@@ -50,10 +51,12 @@ export default class App extends Component {
 	            FriendsList(this.mountScene),
               ItemShop(this.mountScene),
               Stats(this.mountScene),
+              CalorieCounter(this.mountScene),
             ]
           }}
         />
         <Modal
+        
           animationType={"slide"}
           transparent={false}
           visible={this.state.sceneVisible}
@@ -63,6 +66,7 @@ export default class App extends Component {
 
           <BackButton onPress={this.unMountScene} />
         </Modal>
+        
       </View>
     );
   }
