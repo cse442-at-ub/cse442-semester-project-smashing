@@ -31,37 +31,59 @@ const bodyStyles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
   },
-  ListText:{
-    textAlign: "center",
+  ListItemName:{
     fontSize: 20,
+    flex: 2
+  },
+  ListItemPriceView:{
+    flex: 1,
+    backgroundColor: "gold",
+    borderRadius: 20
+  },
+  ListItemPriceText:{
+    textAlign: "center"
   }
+
 })
 
 // Store data
 const mockItemStoreData = [
   {
     id: "1",
-    name: "Large Couch"
+    name: "Large Couch",
+    price: 900,
   },
   {
     id: "2",
-    name: "Blue Shirt"
+    name: "Blue Shirt",
+    price: 20,
   },
   {
     id: "3",
-    name: "Brick Wallpaper"
+    name: "Brick Wallpaper",
+    price: 200,
   },
   {
     id: "4",
-    name: "Top Hat"
+    name: "Top Hat",
+    price: 1000,
   }
 ];
 
 // Creates a list item from a set of props
-function ListItem({name}) {
+function ListItem({name, price}) {
   return (
     <View style={bodyStyles.ListView}>
-      <Text style={bodyStyles.ListText}>{name}</Text>
+      <View style={{flex: 1, flexDirection: "row"}}>
+        <Text style={bodyStyles.ListItemName}>
+          {name}
+        </Text>
+        <View style={bodyStyles.ListItemPriceView}>
+          <Text style={bodyStyles.ListItemPriceText}>
+            {price}
+          </Text>
+        </View>
+      </View>
     </View>
   );
 }
@@ -78,7 +100,7 @@ export default class ItemShop extends Component {
           <FlatList
             data={mockItemStoreData}
             renderItem={({item}) => 
-              <ListItem name={item.name} />
+              <ListItem name={item.name} price={item.price} />
             }
             keyExtractor={item =>
               item.id
