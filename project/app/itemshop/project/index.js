@@ -70,7 +70,7 @@ const mockItemStoreData = [
 ];
 
 // Creates a list item from a set of props
-function ListItem({name}) {
+function ListItem({name, price}) {
   return (
     <View style={bodyStyles.ListView}>
       <View style={{flex: 1, flexDirection: "row"}}>
@@ -79,7 +79,7 @@ function ListItem({name}) {
         </Text>
         <View style={bodyStyles.ListItemPriceView}>
           <Text style={bodyStyles.ListItemPriceText}>
-            price
+            {price}
           </Text>
         </View>
       </View>
@@ -99,7 +99,7 @@ export default class ItemShop extends Component {
           <FlatList
             data={mockItemStoreData}
             renderItem={({item}) => 
-              <ListItem name={item.name} />
+              <ListItem name={item.name} price={item.price} />
             }
             keyExtractor={item =>
               item.id
