@@ -49,19 +49,23 @@ const bodyStyles = StyleSheet.create({
 const mockItemStoreData = [
   {
     id: "1",
-    name: "Large Couch"
+    name: "Large Couch",
+    price: 900,
   },
   {
     id: "2",
-    name: "Blue Shirt"
+    name: "Blue Shirt",
+    price: 20,
   },
   {
     id: "3",
-    name: "Brick Wallpaper"
+    name: "Brick Wallpaper",
+    price: 200,
   },
   {
     id: "4",
-    name: "Top Hat"
+    name: "Top Hat",
+    price: 1000,
   }
 ];
 
