@@ -25,6 +25,26 @@ const headerStyles = StyleSheet.create({
   }
 })
 
+// Store data
+const mockItemStoreData = [
+  {
+    id: 1,
+    name: "Large Couch"
+  },
+  {
+    id: 2,
+    name: "Blue Shirt"
+  },
+  {
+    id: 3,
+    name: "Brick Wallpaper"
+  },
+  {
+    id: 4,
+    name: "Top Hat"
+  },
+];
+
 export default class ItemShop extends Component {
 
   render() {
