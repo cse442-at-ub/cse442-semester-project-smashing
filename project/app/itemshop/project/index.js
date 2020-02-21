@@ -1,13 +1,44 @@
-import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import React, { Component } from "react";
+import { StyleSheet, Text, View } from "react-native";
 
+// Styles corresponding to the different views on the page
+const viewStyles = StyleSheet.create({
+  Header: {
+    flex: 1
+  },
+  Body: {
+    flex: 8,
+    backgroundColor: "blue"
+  },
+  Footer: {
+    flex: 1,
+    backgroundColor: "red"
+  }
+});
+
+const headerStyles = StyleSheet.create({
+  Title:{
+    textAlign: "center",
+    justifyContent: "center",
+    fontSize: 30,
+    fontWeight: "bold"
+  }
+})
 
 export default class ItemShop extends Component {
+
   render() {
     return (
-      <View>
-        {/* <Text>Item Shop!</Text> */}
+      <View style={{ flex: 1 }}>
+        
+        <View style={viewStyles.Header}>
+          <Text style={headerStyles.Title}>Item Shop!</Text>
+        </View>
+
+        <View style={viewStyles.Body} />
+        <View style={viewStyles.Footer} />
       </View>
     );
   }
+
 }
