@@ -24,6 +24,19 @@ const headerStyles = StyleSheet.create({
   }
 });
 
+const bodyStyles = StyleSheet.create({
+  ListView:{
+    backgroundColor: "#C0C0C0",
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  ListText:{
+    textAlign: "center",
+    fontSize: 20,
+  }
+})
+
 // Store data
 const mockItemStoreData = [
   {
@@ -47,8 +60,8 @@ const mockItemStoreData = [
 // Creates a list item from a set of props
 function ListItem({name}) {
   return (
-    <View>
-      <Text>{name}</Text>
+    <View style={bodyStyles.ListView}>
+      <Text style={bodyStyles.ListText}>{name}</Text>
     </View>
   );
 }
