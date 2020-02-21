@@ -37,7 +37,8 @@ const bodyStyles = StyleSheet.create({
   },
   ListItemPriceView:{
     flex: 1,
-    backgroundColor: "gold"
+    backgroundColor: "gold",
+    borderRadius: 20
   },
   ListItemPriceText:{
     textAlign: "center"
