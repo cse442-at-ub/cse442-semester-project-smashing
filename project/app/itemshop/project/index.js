@@ -31,10 +31,18 @@ const bodyStyles = StyleSheet.create({
     marginVertical: 8,
     marginHorizontal: 16,
   },
-  ListText:{
-    textAlign: "center",
+  ListItemName:{
     fontSize: 20,
+    flex: 2
+  },
+  ListItemPriceView:{
+    flex: 1,
+    backgroundColor: "gold"
+  },
+  ListItemPriceText:{
+    textAlign: "center"
   }
+
 })
 
 // Store data
@@ -61,7 +69,16 @@ const mockItemStoreData = [
 function ListItem({name}) {
   return (
     <View style={bodyStyles.ListView}>
-      <Text style={bodyStyles.ListText}>{name}</Text>
+      <View style={{flex: 1, flexDirection: "row"}}>
+        <Text style={bodyStyles.ListItemName}>
+          {name}
+        </Text>
+        <View style={bodyStyles.ListItemPriceView}>
+          <Text style={bodyStyles.ListItemPriceText}>
+            price
+          </Text>
+        </View>
+      </View>
     </View>
   );
 }
