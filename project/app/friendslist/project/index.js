@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { ScrollView, Text, View, StyleSheet, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
-import { EvilIcons } from '@expo/vector-icons';
+import { EvilIcons, Entypo } from '@expo/vector-icons';
 
 
 export default class FriendsList extends Component {
@@ -54,54 +54,67 @@ export default class FriendsList extends Component {
 
             <ScrollView>
               <View style={styles.friendContainer}>
+                <Entypo name='user' size={50} color='black' />
                 <Text>Friend 1</Text>
               </View>
 
               <View style={styles.friendContainer}>
+                <Entypo name='user' size={50} color='black' />
                 <Text>Friend 2</Text>
               </View>
 
               <View style={styles.friendContainer}>
+                <Entypo name='user' size={50} color='black' />
                 <Text>Friend 3</Text>
               </View>
 
               <View style={styles.friendContainer}>
+                <Entypo name='user' size={50} color='black' />
                 <Text>Friend 4</Text>
               </View>
 
               <View style={styles.friendContainer}>
+                <Entypo name='user' size={50} color='black' />
                 <Text>Friend 5</Text>
               </View>
 
               <View style={styles.friendContainer}>
+                <Entypo name='user' size={50} color='black' />
                 <Text>Friend 6</Text>
               </View>
 
               <View style={styles.friendContainer}>
+                <Entypo name='user' size={50} color='black' />
                 <Text>Friend 7</Text>
               </View>
 
               <View style={styles.friendContainer}>
+                <Entypo name='user' size={50} color='black' />
                 <Text>Friend 8</Text>
               </View>
 
               <View style={styles.friendContainer}>
+                <Entypo name='user' size={50} color='black' />  
                 <Text>Friend 9</Text>
               </View>
 
               <View style={styles.friendContainer}>
+                <Entypo name='user' size={50} color='black' />
                 <Text>Friend 10</Text>
               </View>
 
               <View style={styles.friendContainer}>
+                <Entypo name='user' size={50} color='black' />
                 <Text>Friend 11</Text>
               </View>
 
               <View style={styles.friendContainer}>
+                <Entypo name='user' size={50} color='black' />
                 <Text>Friend 12</Text>
               </View>
 
               <View style={styles.friendContainer}>
+                <Entypo name='user' size={50} color='black' />
                 <Text>Friend 13</Text>
               </View>
             </ScrollView>
@@ -181,6 +194,7 @@ const styles = StyleSheet.create({
     marginRight: 30,
   },
   friendContainer: {
+    flexDirection: 'row',
     marginTop: 15,
     padding: 10,
     backgroundColor: 'pink',
