@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TextInput } from 'react-native';
 import { EvilIcons } from '@expo/vector-icons';
 
 
@@ -7,17 +7,27 @@ export default class FriendsList extends Component {
   render() {
     return (
       <View style={styles.container}>
+
           <View style={styles.tabView}>
             <Text style={styles.userName}>User Name</Text>
             <EvilIcons name='user' size={50} color='black' />
           </View>
+
           <View style={styles.friendNav}>
             <View style={styles.friendSelected}>
               <Text style={styles.friendNum}>15 Friends</Text>
             </View>
             <View style={styles.notSelected}>
-              <Text style={styles.friendNum}>Suggested</Text>
+              <Text style={styles.suggested}>Suggested</Text>
             </View>
+          </View>
+
+          <View style={styles.searchBarView}>
+            <TextInput 
+            style={styles.searchBar}
+            placeholder='Search Friends' 
+            />
+            <EvilIcons name='search' size={45} color='black' />
           </View>
       </View>
     );
@@ -58,6 +68,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  suggested: {
+    color: '#D5D5C8',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
   friendSelected: {
     borderBottomWidth: 1,
     borderBottomColor: 'black',
@@ -71,5 +86,21 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-evenly',
+  },
+  searchBar: {
+    fontSize: 14,
+		paddingHorizontal: 8,
+    paddingLeft: 30,
+    alignContent: 'center',
+    flex: 1,
+  },
+  searchBarView: {
+    flexDirection: 'row',
+    height: '8%',
+    borderBottomColor: '#bbb',
+    borderBottomWidth: 1,
+    borderBottomStartRadius: 30,
+    borderBottomEndRadius: 10,
+    marginRight: 30,
   },
 });
