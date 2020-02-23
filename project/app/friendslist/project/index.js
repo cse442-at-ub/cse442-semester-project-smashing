@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import { ScrollView, Text, View, StyleSheet, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Button, ScrollView, Text, View, StyleSheet, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { EvilIcons, Entypo } from '@expo/vector-icons';
 
 
@@ -54,68 +54,133 @@ export default class FriendsList extends Component {
 
             <ScrollView>
               <View style={styles.friendContainer}>
-                <Entypo name='user' size={50} color='black' />
-                <Text>Friend 1</Text>
+                <View style={styles.friendList}>
+                  <Entypo name='user' size={50} color='black' />
+                  <Text>Friend 1</Text>
+                </View>
+                <View style={styles.friendList}>
+                  <Button title='Friends' />
+                </View>
               </View>
 
               <View style={styles.friendContainer}>
-                <Entypo name='user' size={50} color='black' />
-                <Text>Friend 2</Text>
+                <View style={styles.friendList}>
+                  <Entypo name='user' size={50} color='black' />
+                  <Text>Friend 2</Text>
+                </View>
+                <View style={styles.friendList}>
+                  <Button title='Friends' />
+                </View>
               </View>
 
               <View style={styles.friendContainer}>
-                <Entypo name='user' size={50} color='black' />
-                <Text>Friend 3</Text>
+                <View style={styles.friendList}>
+                  <Entypo name='user' size={50} color='black' />
+                  <Text>Friend 3</Text>
+                </View>
+                <View style={styles.friendList}>
+                  <Button title='Friends' />
+                </View>
               </View>
 
               <View style={styles.friendContainer}>
-                <Entypo name='user' size={50} color='black' />
-                <Text>Friend 4</Text>
+                <View style={styles.friendList}>
+                  <Entypo name='user' size={50} color='black' />
+                  <Text>Friend 4</Text>
+                </View>
+                <View style={styles.friendList}>
+                  <Button title='Friends' />
+                </View>
               </View>
 
               <View style={styles.friendContainer}>
-                <Entypo name='user' size={50} color='black' />
-                <Text>Friend 5</Text>
+                <View style={styles.friendList}>
+                  <Entypo name='user' size={50} color='black' />
+                  <Text>Friend 5</Text>
+                </View>
+                <View style={styles.friendList}>
+                  <Button title='Friends' />
+                </View>
               </View>
 
               <View style={styles.friendContainer}>
-                <Entypo name='user' size={50} color='black' />
-                <Text>Friend 6</Text>
+                <View style={styles.friendList}>
+                  <Entypo name='user' size={50} color='black' />
+                  <Text>Friend 6</Text>
+                </View>
+                <View style={styles.friendList}>
+                  <Button title='Friends' />
+                </View>
               </View>
 
               <View style={styles.friendContainer}>
-                <Entypo name='user' size={50} color='black' />
-                <Text>Friend 7</Text>
+                <View style={styles.friendList}>
+                  <Entypo name='user' size={50} color='black' />
+                  <Text>Friend 7</Text>
+                </View>
+                <View style={styles.friendList}>
+                  <Button title='Friends' />
+                </View>
               </View>
 
               <View style={styles.friendContainer}>
-                <Entypo name='user' size={50} color='black' />
-                <Text>Friend 8</Text>
+                <View style={styles.friendList}>
+                  <Entypo name='user' size={50} color='black' />
+                  <Text>Friend 8</Text>
+                </View>
+                <View style={styles.friendList}>
+                  <Button title='Friends' />
+                </View>
               </View>
 
               <View style={styles.friendContainer}>
-                <Entypo name='user' size={50} color='black' />  
-                <Text>Friend 9</Text>
+                <View style={styles.friendList}>
+                  <Entypo name='user' size={50} color='black' />
+                  <Text>Friend 9</Text>
+                </View>
+                <View style={styles.friendList}>
+                  <Button title='Friends' />
+                </View>
               </View>
 
               <View style={styles.friendContainer}>
-                <Entypo name='user' size={50} color='black' />
-                <Text>Friend 10</Text>
+                <View style={styles.friendList}>
+                  <Entypo name='user' size={50} color='black' />
+                  <Text>Friend 10</Text>
+                </View>
+                <View style={styles.friendList}>
+                  <Button title='Friends' />
+                </View>
               </View>
 
               <View style={styles.friendContainer}>
-                <Entypo name='user' size={50} color='black' />
-                <Text>Friend 11</Text>
+                <View style={styles.friendList}>
+                  <Entypo name='user' size={50} color='black' />
+                  <Text>Friend 11</Text>
+                </View>
+                <View style={styles.friendList}>
+                  <Button title='Friends' />
+                </View>
               </View>
 
               <View style={styles.friendContainer}>
-                <Entypo name='user' size={50} color='black' />
-                <Text>Friend 12</Text>
+                <View style={styles.friendList}>
+                  <Entypo name='user' size={50} color='black' />
+                  <Text>Friend 12</Text>
+                </View>
+                <View style={styles.friendList}>
+                  <Button title='Friends' />
+                </View>
               </View>
 
               <View style={styles.friendContainer}>
-                <Entypo name='user' size={50} color='black' />
-                <Text>Friend 13</Text>
+                <View style={styles.friendList}>
+                  <Entypo name='user' size={50} color='black' />
+                  <Text>Friend 13</Text>
+                </View>
+                <View style={styles.friendList}>
+                  <Button title='Friends' />
+                </View>
               </View>
             </ScrollView>
         </View>
@@ -195,9 +260,13 @@ const styles = StyleSheet.create({
   },
   friendContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 15,
     padding: 10,
     backgroundColor: 'pink',
     fontSize: 20,
-  }
+  },
+  friendList:{
+    flexDirection: 'row',
+  },
 });
