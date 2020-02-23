@@ -1,17 +1,36 @@
 import React, { Component } from 'react';
-import { Text, View ,StyleSheet} from 'react-native';
+import { Text, View ,StyleSheet, Image, FlatList} from 'react-native';
 import { LinearGradient } from "expo";
+import Coin from "./assets/coin.gif"
+
+
+
+
+const DATA = [
+  {
+    key: 1,
+    name: 'Wallet',
+    value: 323454234,
+  },
+  {
+    key: 2,
+    name: 'Todays Earnings',
+    value: 469,
+  },
+];
 
 
 
 export default class CalorieCounter extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      
+    };
   }
   render() {
     return (
-      <LinearGradient
+      <LinearGradient 
         colors={["#4AC29A", "#BDFFF3"]}
         style={css.linearGradient}
       >
@@ -20,23 +39,45 @@ export default class CalorieCounter extends Component {
         colors={["#4AC29A", "#BDFFF3"]}
         style={css.linearGradient2}
       >
-       <Text style = {css.topfont}>Calories Counter</Text>
+       <Text style = {css.topfont}>Currency Counter</Text>
        </LinearGradient>
       </View>
 
-      <View style = {css.lower}>
       <LinearGradient
-        colors={["#4AC29F", "#BDFFFF"]}
-        style={css.linearGradient2}
+        colors={["#4AC29A", "#BDFFF3"]}
+        style={css.linearGradient}
       >
-
-
-
-
-        
-      </LinearGradient>
+      <FlatList
+      contentContainerStyle={{flexDirection : "column"}}
+      numColumns={2}
+      data={DATA}
+      renderItem={({item}) => (
+      <View style={css.separator}>
+        <Text style={css.name}>{item.name}</Text>
       </View>
+      )}
+      />
+      </LinearGradient>
 
+      <FlatList
+      contentContainerStyle={{flexDirection : "column"}}
+      numColumns={2}
+      data={DATA}
+      renderItem={({item}) => (
+      <View style={css.separator}>
+        <Text style={css.value}>{item.value}</Text>
+      </View>)}/>
+
+      <Image
+        style ={css.coin} source={Coin}
+      />
+    
+
+    
+
+
+
+      
       </LinearGradient>
     );
   }
@@ -45,8 +86,27 @@ export default class CalorieCounter extends Component {
 
 
 const css = StyleSheet.create({
-
+  name: {
+    flex: 1,
+    fontSize: 23.5,
+    textAlign: "center",
+    color: 'blue', 
+   },
+   value: {
+    flex: 1,
+    fontSize: 22,
+    textAlign: "center",
+    color: 'blue',
+   },
+   separator: {
+    flex: 2, 
+    borderWidth: 3, 
+    borderColor: 'green',
+    textAlign: "center", 
+    marginBottom: "40%",
+   },
   linearGradient: {
+    height: 3,
     flex: 1,
   },
   linearGradient2: {
@@ -64,19 +124,15 @@ const css = StyleSheet.create({
   topfont: {
       justifyContent: "center",
       alignItems: "center",
-      fontSize: 35,
-      color: 'black',
-      
+      fontSize: 34,
+      color: 'blue',
   },
-  lower: {
-    flexBasis: 375,
-    borderWidth: 3,
-    borderColor: 'green',
-    height: 20,
-    margin: 40,
+  coin: {
     justifyContent: "center",
-    borderRadius: 20,
-  },
+    alignItems: "center",
+    marginLeft: "25%"
+  },  
+ 
 
 
 });
