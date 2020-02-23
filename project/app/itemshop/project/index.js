@@ -173,7 +173,7 @@ export default class ItemShop extends Component {
             this.setModalVisibility(false);
           }}
         >
-          <DescriptionModal description={selectedItem? selectedItem.description: null}/>
+          <DescriptionModal description={selectedItem? selectedItem.description: null} setModalVisible={this.setModalVisibility}/>
         </Modal>
 
         <View style={viewStyles.Footer} />

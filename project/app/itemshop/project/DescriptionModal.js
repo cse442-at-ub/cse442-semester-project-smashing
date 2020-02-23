@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 
 // Views for the different components of the modal
 const viewStyles = StyleSheet.create({
@@ -20,10 +20,15 @@ const viewStyles = StyleSheet.create({
 class DescriptionModal extends Component {
   constructor(props) {
     super(props);
+
+    this.onCloseButtonPressed = this.onCloseButtonPressed.bind(this);
+  }
+
+  onCloseButtonPressed(){
+      this.props.setModalVisible(false);
   }
 
   render() {
-    console.log(this.props.description);
     const element = (
       <View>
         <View style={viewStyles.Header}>
@@ -31,11 +36,13 @@ class DescriptionModal extends Component {
           <Text style={viewStyles.TitleText}>{this.props.name}</Text>
         </View>
         <View style={viewStyles.Body}>
-          <Text>Body</Text>
           <Text>{this.props.description}</Text>
         </View>
         <View style={viewStyles.Footer}>
-          <Text>Footer</Text>
+          <Button
+            title="Close"
+            onPress={this.onCloseButtonPressed}
+          />
         </View>
       </View>
     );
