@@ -4,6 +4,7 @@ import {
   Text,
   View,
   FlatList,
+  Modal,
   TouchableOpacity
 } from "react-native";
 
@@ -78,14 +79,14 @@ const mockItemStoreData = [
 ];
 
 // Creates a list item from a set of props
-function ListItem({ name, price }) {
+function ListItem({ name, price, onNameClick }) {
   return (
     <View style={bodyStyles.ListView}>
       <View style={{ flex: 1, flexDirection: "row" }}>
         <View style={bodyStyles.ListItemNameView}>
           <TouchableOpacity
             onPress={() => {
-              console.log("pressed");
+              onNameClick(true);
             }}
           >
             <Text style={bodyStyles.ListItemName}>{name}</Text>
@@ -100,7 +101,26 @@ function ListItem({ name, price }) {
 }
 
 export default class ItemShop extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      modalVisible: false
+    };
+
+    this.setModalVisibility = this.setModalVisibility.bind(this);
+  }
+
+  /**
+   * Sets modal visibility
+   * @param {boolean} visible
+   */
+  setModalVisibility(visible) {
+    this.setState({ modalVisible: visible });
+  }
+
   render() {
+    const {modalVisible} = this.state;
     return (
       <View style={{ flex: 1 }}>
         <View style={viewStyles.Header}>
@@ -111,11 +131,41 @@ export default class ItemShop extends Component {
           <FlatList
             data={mockItemStoreData}
             renderItem={({ item }) => (
-              <ListItem name={item.name} price={item.price} />
+              <ListItem
+                name={item.name}
+                price={item.price}
+                onNameClick={this.setModalVisibility}
+              />
             )}
             keyExtractor={item => item.id}
           />
         </View>
+
+        <Modal
+          animationType="slide"
+          transparent={modalVisible}
+          visible={this.state.modalVisible}
+          onRequestClose={
+            ()=>{
+              this.setModalVisibility(false);
+            }
+          } 
+        >
+          <View>
+            <Text>
+              Hello WOrld
+            </Text>
+            <TouchableOpacity
+              onPress={
+                ()=>{
+                  this.setModalVisibility(false);
+                }
+              } 
+            >
+              <Text>Hide Modal</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
 
         <View style={viewStyles.Footer} />
       </View>
