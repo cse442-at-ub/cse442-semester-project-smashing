@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, FlatList } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity
+} from "react-native";
 
 // Styles corresponding to the different views on the page
 const viewStyles = StyleSheet.create({
@@ -25,63 +31,68 @@ const headerStyles = StyleSheet.create({
 });
 
 const bodyStyles = StyleSheet.create({
-  ListView:{
+  ListView: {
     backgroundColor: "#C0C0C0",
     padding: 20,
     marginVertical: 8,
-    marginHorizontal: 16,
+    marginHorizontal: 16
   },
-  ListItemName:{
-    fontSize: 20,
+  ListItemName: {
+    fontSize: 20
+  },
+  ListItemNameView: {
     flex: 2
   },
-  ListItemPriceView:{
+  ListItemPriceView: {
     flex: 1,
     backgroundColor: "gold",
     borderRadius: 20
   },
-  ListItemPriceText:{
+  ListItemPriceText: {
     textAlign: "center"
   }
-
-})
+});
 
 // Store data
 const mockItemStoreData = [
   {
     id: "1",
     name: "Large Couch",
-    price: 900,
+    price: 900
   },
   {
     id: "2",
     name: "Blue Shirt",
-    price: 20,
+    price: 20
   },
   {
     id: "3",
     name: "Brick Wallpaper",
-    price: 200,
+    price: 200
   },
   {
     id: "4",
     name: "Top Hat",
-    price: 1000,
+    price: 1000
   }
 ];
 
 // Creates a list item from a set of props
-function ListItem({name, price}) {
+function ListItem({ name, price }) {
   return (
     <View style={bodyStyles.ListView}>
-      <View style={{flex: 1, flexDirection: "row"}}>
-        <Text style={bodyStyles.ListItemName}>
-          {name}
-        </Text>
+      <View style={{ flex: 1, flexDirection: "row" }}>
+        <View style={bodyStyles.ListItemNameView}>
+          <TouchableOpacity
+            onPress={() => {
+              console.log("pressed");
+            }}
+          >
+            <Text style={bodyStyles.ListItemName}>{name}</Text>
+          </TouchableOpacity>
+        </View>
         <View style={bodyStyles.ListItemPriceView}>
-          <Text style={bodyStyles.ListItemPriceText}>
-            {price}
-          </Text>
+          <Text style={bodyStyles.ListItemPriceText}>{price}</Text>
         </View>
       </View>
     </View>
@@ -99,12 +110,10 @@ export default class ItemShop extends Component {
         <View style={viewStyles.Body}>
           <FlatList
             data={mockItemStoreData}
-            renderItem={({item}) => 
+            renderItem={({ item }) => (
               <ListItem name={item.name} price={item.price} />
-            }
-            keyExtractor={item =>
-              item.id
-            }
+            )}
+            keyExtractor={item => item.id}
           />
         </View>
 
