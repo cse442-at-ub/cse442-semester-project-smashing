@@ -31,12 +31,12 @@ export default class CalorieCounter extends Component {
   render() {
     return (
       <LinearGradient 
-        colors={["#4AC29A", "#BDFFF3"]}
+        colors={["#DBDBDB", "#EAEAEA"]}
         style={css.linearGradient}
       >
       <View style = {css.header}>
       <LinearGradient
-        colors={["#4AC29A", "#BDFFF3"]}
+        colors={["#DC2424", "#4A569D"]}
         style={css.linearGradient2}
       >
        <Text style = {css.topfont}>Currency Counter</Text>
@@ -44,7 +44,7 @@ export default class CalorieCounter extends Component {
       </View>
 
       <LinearGradient
-        colors={["#4AC29A", "#BDFFF3"]}
+        colors={["#DBDBDB", "#EAEAEA"]}
         style={css.linearGradient}
       >
       <FlatList
@@ -101,7 +101,7 @@ const css = StyleSheet.create({
    separator: {
     flex: 2, 
     borderWidth: 3, 
-    borderColor: 'green',
+    borderColor: 'black',
     textAlign: "center", 
     marginBottom: "40%",
    },
@@ -116,16 +116,16 @@ const css = StyleSheet.create({
   header: {
     flexBasis: 60,
     borderWidth: 3,
-    borderColor: 'green',
+    borderColor: 'black',
     height: 18,
     margin: 45,
-    borderRadius: 20,
+    borderRadius: 26,
   },
   topfont: {
       justifyContent: "center",
       alignItems: "center",
       fontSize: 34,
-      color: 'blue',
+      color: 'white',
   },
   coin: {
     justifyContent: "center",
