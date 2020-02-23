@@ -167,13 +167,12 @@ export default class ItemShop extends Component {
 
         <Modal
           animationType="slide"
-          transparent={false}
           visible={this.state.modalVisible}
           onRequestClose={() => {
             this.setModalVisibility(false);
           }}
         >
-          <DescriptionModal description={selectedItem? selectedItem.description: null} setModalVisible={this.setModalVisibility}/>
+          <DescriptionModal name={selectedItemID? selectedItem.name: null} description={selectedItem? selectedItem.description: null} setModalVisible={this.setModalVisibility}/>
         </Modal>
 
         <View style={viewStyles.Footer} />

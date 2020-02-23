@@ -11,6 +11,9 @@ const viewStyles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     justifyContent: "center"
+  },
+  DescriptionText:{
+    fontSize: 20
   }
 });
 
@@ -32,11 +35,10 @@ class DescriptionModal extends Component {
     const element = (
       <View>
         <View style={viewStyles.Header}>
-          <Text style={viewStyles.TitleText}>Modal Text</Text>
           <Text style={viewStyles.TitleText}>{this.props.name}</Text>
         </View>
         <View style={viewStyles.Body}>
-          <Text>{this.props.description}</Text>
+          <Text style={viewStyles.DescriptionText}>{this.props.description}</Text>
         </View>
         <View style={viewStyles.Footer}>
           <Button
