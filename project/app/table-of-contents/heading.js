@@ -17,6 +17,7 @@ export default class Heading extends Component {
         style={css.container}
       >
         <Text style={css.text}>
+          
           {this.props.value
             .substring(
               this.props.value.indexOf(".") + 1,
