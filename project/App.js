@@ -8,7 +8,7 @@ import LeaderBoards from "./app/leaderboards";
 import FriendsList from "./app/friendslist";
 import ItemShop from "./app/itemshop";
 import Stats from "./app/stats";
-
+//import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 

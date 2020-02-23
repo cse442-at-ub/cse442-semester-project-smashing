@@ -28,6 +28,7 @@ export default class App extends Component {
     this.setState({
       sceneVisible: true,
       scene: scene
+      
     });
   };
 

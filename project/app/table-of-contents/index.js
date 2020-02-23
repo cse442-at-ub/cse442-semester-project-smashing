@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { StatusBar, View, StyleSheet, ScrollView, Image } from "react-native";
+import { StatusBar, View, StyleSheet, ScrollView, Image  } from "react-native";
 import { GameEngine } from "react-native-game-engine";
 import Heading from "./heading";
 import Item from "./item";
 import { LinearGradient } from "expo";
 import Logo from "./images/head.gif"
+
 
 export default class TableOfContents extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ export default class TableOfContents extends Component {
       heading: props.contents.heading,
       items: props.contents.items,
       animation: "fadeInRight"
+     
     };
   }
 
@@ -33,10 +35,12 @@ export default class TableOfContents extends Component {
   render() {
 
     return (
+     
       <LinearGradient
         colors={["#DC2424", "#4A569D"]}
         style={css.linearGradient}
       >
+     
 
         <GameEngine
           ref={"engine"}
@@ -60,7 +64,7 @@ export default class TableOfContents extends Component {
                 ref={this.state.heading}
                 value={this.state.heading}
               />
-
+             
             </View>
 
             {this.state.items.map((x, i) => {
