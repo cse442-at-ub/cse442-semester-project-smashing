@@ -8,6 +8,8 @@ import {
   TouchableOpacity
 } from "react-native";
 
+import DescriptionModal from './DescriptionModal'
+
 // Styles corresponding to the different views on the page
 const viewStyles = StyleSheet.create({
   Header: {
@@ -79,14 +81,14 @@ const mockItemStoreData = [
 ];
 
 // Creates a list item from a set of props
-function ListItem({ name, price, onNameClick }) {
+function ListItem({ name, price, itemID, onItemClicked }) {
   return (
     <View style={bodyStyles.ListView}>
       <View style={{ flex: 1, flexDirection: "row" }}>
         <View style={bodyStyles.ListItemNameView}>
           <TouchableOpacity
             onPress={() => {
-              onNameClick(true);
+              onItemClicked(true, itemID);
             }}
           >
             <Text style={bodyStyles.ListItemName}>{name}</Text>
@@ -105,10 +107,23 @@ export default class ItemShop extends Component {
     super(props);
 
     this.state = {
-      modalVisible: false
+      modalVisible: false,
+      selectedItemID: null
     };
 
     this.setModalVisibility = this.setModalVisibility.bind(this);
+    this.onItemClicked = this.onItemClicked.bind(this);
+  }
+
+  /**
+   * Sets the modal visibility and
+   * item id.
+   * 
+   * @param {boolean} visible 
+   * @param {string} itemID 
+   */
+  onItemClicked(visible, itemID){
+    this.setState({modalVisible: visible, selectedItemID: itemID});
   }
 
   /**
@@ -120,7 +135,11 @@ export default class ItemShop extends Component {
   }
 
   render() {
-    const {modalVisible} = this.state;
+    const { modalVisible, selectedItemID } = this.state;
+
+    // Get the selected item
+    const selectedItem = mockItemStoreData.find(element=>element.id === selectedItemID);
+
     return (
       <View style={{ flex: 1 }}>
         <View style={viewStyles.Header}>
@@ -134,7 +153,8 @@ export default class ItemShop extends Component {
               <ListItem
                 name={item.name}
                 price={item.price}
-                onNameClick={this.setModalVisibility}
+                itemID={item.id}
+                onItemClicked={this.onItemClicked}
               />
             )}
             keyExtractor={item => item.id}
@@ -143,28 +163,13 @@ export default class ItemShop extends Component {
 
         <Modal
           animationType="slide"
-          transparent={modalVisible}
+          transparent={false}
           visible={this.state.modalVisible}
-          onRequestClose={
-            ()=>{
-              this.setModalVisibility(false);
-            }
-          } 
+          onRequestClose={() => {
+            this.setModalVisibility(false);
+          }}
         >
-          <View>
-            <Text>
-              Hello WOrld
-            </Text>
-            <TouchableOpacity
-              onPress={
-                ()=>{
-                  this.setModalVisibility(false);
-                }
-              } 
-            >
-              <Text>Hide Modal</Text>
-            </TouchableOpacity>
-          </View>
+          <DescriptionModal description={selectedItem? selectedItem.description: null}/>
         </Modal>
 
         <View style={viewStyles.Footer} />
