@@ -61,22 +61,26 @@ const mockItemStoreData = [
   {
     id: "1",
     name: "Large Couch",
-    price: 900
+    price: 900,
+    description: "A large couch with multiple seat cushions."
   },
   {
     id: "2",
     name: "Blue Shirt",
-    price: 20
+    price: 20,
+    description: "Blue striped shirt."
   },
   {
     id: "3",
     name: "Brick Wallpaper",
-    price: 200
+    price: 200,
+    description: "Brick wallpaper to decorate the room."
   },
   {
     id: "4",
     name: "Top Hat",
-    price: 1000
+    price: 1000,
+    description: "A tall hat fit for a president."
   }
 ];
 
