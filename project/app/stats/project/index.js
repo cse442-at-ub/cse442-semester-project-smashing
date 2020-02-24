@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, StyleSheet, Text, Dimensions, Button, Alert } from 'react-native';
+import { View, FlatList, StyleSheet, Text, Dimensions, Button, Alert, TouchableWithoutFeedback } from 'react-native';
 import { LinearGradient } from "expo";
 
 const data = [
@@ -57,11 +57,9 @@ export default class Stats extends Component {
     } else if (item.type === "button") {
       return (
         <View style={styles.button}>
-          <Button
-            title={item.val}
-            color= "#fff"
-            onPress={() => Alert.alert('pressed')}
-          />
+          <TouchableWithoutFeedback onPress={() => Alert.alert('pressed')}>
+            <Text style={{color: "white"}}>{item.val}</Text>
+          </TouchableWithoutFeedback>
         </View>
       )
     }
@@ -69,22 +67,22 @@ export default class Stats extends Component {
   render() {
     return (
       <LinearGradient
-      colors={["#283c86", "#45a247"]}
-      style={styles.linearGradient}
-    >
-      <React.Fragment>
-        <View style={styles.margin}>
-          <Text style={styles.title}>
-            STATS
+        colors={["#283c86", "#45a247"]}
+        style={styles.linearGradient}
+      >
+        <React.Fragment>
+          <View style={styles.margin}>
+            <Text style={styles.title}>
+              STATS
         </Text>
-        </View>
-        <FlatList
-          data={data}
-          style={styles.container}
-          renderItem={this.renderItem}
-          numColumns={numColumns}
-        />
-      </React.Fragment>
+          </View>
+            <FlatList
+              data={data}
+              style={styles.container}
+              renderItem={this.renderItem}
+              numColumns={numColumns}
+            />
+        </React.Fragment>
       </LinearGradient>
     );
   }
@@ -116,13 +114,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     borderWidth: 2,
-    marginBottom: 5, 
+    marginBottom: 5,
     borderColor: '#DDD',
     borderRadius: 10,
     height: Dimensions.get('window').width / numColumns / 2, // approximate a square
-  }, 
+  },
 
   labelText: {
+    backgroundColor: 'transparent',
     alignItems: 'center',
     justifyContent: 'center',
     color: '#fff',
