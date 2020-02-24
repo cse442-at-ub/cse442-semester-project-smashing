@@ -1,6 +1,7 @@
 import React, { Component, useState } from 'react';
 import { Button, ScrollView, Text, View, StyleSheet, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { EvilIcons, Entypo } from '@expo/vector-icons';
+import FriendItem from './friendItem';
 
 
 export default class FriendsList extends Component {
@@ -53,136 +54,21 @@ export default class FriendsList extends Component {
             </View>
 
             <ScrollView>
-              <View style={styles.friendContainer}>
-                <View style={styles.friendList}>
-                  <Entypo name='user' size={50} color='black' />
-                  <Text>Friend 1</Text>
-                </View>
-                <View style={styles.friendList}>
-                  <Button title='Friends' />
-                </View>
-              </View>
-
-              <View style={styles.friendContainer}>
-                <View style={styles.friendList}>
-                  <Entypo name='user' size={50} color='black' />
-                  <Text>Friend 2</Text>
-                </View>
-                <View style={styles.friendList}>
-                  <Button title='Friends' />
-                </View>
-              </View>
-
-              <View style={styles.friendContainer}>
-                <View style={styles.friendList}>
-                  <Entypo name='user' size={50} color='black' />
-                  <Text>Friend 3</Text>
-                </View>
-                <View style={styles.friendList}>
-                  <Button title='Friends' />
-                </View>
-              </View>
-
-              <View style={styles.friendContainer}>
-                <View style={styles.friendList}>
-                  <Entypo name='user' size={50} color='black' />
-                  <Text>Friend 4</Text>
-                </View>
-                <View style={styles.friendList}>
-                  <Button title='Friends' />
-                </View>
-              </View>
-
-              <View style={styles.friendContainer}>
-                <View style={styles.friendList}>
-                  <Entypo name='user' size={50} color='black' />
-                  <Text>Friend 5</Text>
-                </View>
-                <View style={styles.friendList}>
-                  <Button title='Friends' />
-                </View>
-              </View>
-
-              <View style={styles.friendContainer}>
-                <View style={styles.friendList}>
-                  <Entypo name='user' size={50} color='black' />
-                  <Text>Friend 6</Text>
-                </View>
-                <View style={styles.friendList}>
-                  <Button title='Friends' />
-                </View>
-              </View>
-
-              <View style={styles.friendContainer}>
-                <View style={styles.friendList}>
-                  <Entypo name='user' size={50} color='black' />
-                  <Text>Friend 7</Text>
-                </View>
-                <View style={styles.friendList}>
-                  <Button title='Friends' />
-                </View>
-              </View>
-
-              <View style={styles.friendContainer}>
-                <View style={styles.friendList}>
-                  <Entypo name='user' size={50} color='black' />
-                  <Text>Friend 8</Text>
-                </View>
-                <View style={styles.friendList}>
-                  <Button title='Friends' />
-                </View>
-              </View>
-
-              <View style={styles.friendContainer}>
-                <View style={styles.friendList}>
-                  <Entypo name='user' size={50} color='black' />
-                  <Text>Friend 9</Text>
-                </View>
-                <View style={styles.friendList}>
-                  <Button title='Friends' />
-                </View>
-              </View>
-
-              <View style={styles.friendContainer}>
-                <View style={styles.friendList}>
-                  <Entypo name='user' size={50} color='black' />
-                  <Text>Friend 10</Text>
-                </View>
-                <View style={styles.friendList}>
-                  <Button title='Friends' />
-                </View>
-              </View>
-
-              <View style={styles.friendContainer}>
-                <View style={styles.friendList}>
-                  <Entypo name='user' size={50} color='black' />
-                  <Text>Friend 11</Text>
-                </View>
-                <View style={styles.friendList}>
-                  <Button title='Friends' />
-                </View>
-              </View>
-
-              <View style={styles.friendContainer}>
-                <View style={styles.friendList}>
-                  <Entypo name='user' size={50} color='black' />
-                  <Text>Friend 12</Text>
-                </View>
-                <View style={styles.friendList}>
-                  <Button title='Friends' />
-                </View>
-              </View>
-
-              <View style={styles.friendContainer}>
-                <View style={styles.friendList}>
-                  <Entypo name='user' size={50} color='black' />
-                  <Text>Friend 13</Text>
-                </View>
-                <View style={styles.friendList}>
-                  <Button title='Friends' />
-                </View>
-              </View>
+              <FriendItem item={'Friend 1'}/>
+              <FriendItem item={'Friend 2'}/>
+              <FriendItem item={'Friend 3'}/>
+              <FriendItem item={'Friend 4'}/>
+              <FriendItem item={'Friend 5'}/>
+              <FriendItem item={'Friend 6'}/>
+              <FriendItem item={'Friend 7'}/>
+              <FriendItem item={'Friend 8'}/>
+              <FriendItem item={'Friend 9'}/>
+              <FriendItem item={'Friend 10'}/>
+              <FriendItem item={'Friend 11'}/>
+              <FriendItem item={'Friend 12'}/>
+              <FriendItem item={'Friend 13'}/>
             </ScrollView>
+
         </View>
       </TouchableWithoutFeedback>
     );
@@ -268,5 +154,6 @@ const styles = StyleSheet.create({
   },
   friendList:{
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
