@@ -27,6 +27,7 @@
 //         <View style={styles.btn}>
 //           <Text style={styles.btnText}>button</Text>
 //         </View>
+
 //       </TouchableOpacity>
 //     );
 //     return (
