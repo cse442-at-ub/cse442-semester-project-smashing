@@ -8,7 +8,8 @@ import {
   TouchableOpacity
 } from "react-native";
 
-import DescriptionModal from './DescriptionModal'
+import DescriptionModal from "./DescriptionModal";
+import ShopListItem from './ShopListItem';
 
 // Styles corresponding to the different views on the page
 const viewStyles = StyleSheet.create({
@@ -30,29 +31,6 @@ const headerStyles = StyleSheet.create({
     justifyContent: "center",
     fontSize: 30,
     fontWeight: "bold"
-  }
-});
-
-const bodyStyles = StyleSheet.create({
-  ListView: {
-    backgroundColor: "#C0C0C0",
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16
-  },
-  ListItemName: {
-    fontSize: 20
-  },
-  ListItemNameView: {
-    flex: 2
-  },
-  ListItemPriceView: {
-    flex: 1,
-    backgroundColor: "gold",
-    borderRadius: 20
-  },
-  ListItemPriceText: {
-    textAlign: "center"
   }
 });
 
@@ -84,28 +62,9 @@ const mockItemStoreData = [
   }
 ];
 
-// Creates a list item from a set of props
-function ListItem({ name, price, itemID, onItemClicked }) {
-  return (
-    <View style={bodyStyles.ListView}>
-      <View style={{ flex: 1, flexDirection: "row" }}>
-        <View style={bodyStyles.ListItemNameView}>
-          <TouchableOpacity
-            onPress={() => {
-              onItemClicked(true, itemID);
-            }}
-          >
-            <Text style={bodyStyles.ListItemName}>{name}</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={bodyStyles.ListItemPriceView}>
-          <Text style={bodyStyles.ListItemPriceText}>{price}</Text>
-        </View>
-      </View>
-    </View>
-  );
-}
-
+/**
+ * Item Shop Page
+ */
 export default class ItemShop extends Component {
   constructor(props) {
     super(props);
@@ -117,17 +76,28 @@ export default class ItemShop extends Component {
 
     this.setModalVisibility = this.setModalVisibility.bind(this);
     this.onItemClicked = this.onItemClicked.bind(this);
+    this.onItemPurchaseClicked = this.onItemPurchaseClicked.bind(this);
   }
 
   /**
    * Sets the modal visibility and
    * item id.
-   * 
-   * @param {boolean} visible 
-   * @param {string} itemID 
+   *
+   * @param {boolean} visible
+   * @param {string} itemID
    */
-  onItemClicked(visible, itemID){
-    this.setState({modalVisible: visible, selectedItemID: itemID});
+  onItemClicked(visible, itemID) {
+    this.setState({ modalVisible: visible, selectedItemID: itemID });
+  }
+
+  /**
+   * Purchase for the itemID was selected.
+   * 
+   * @param {String} itemID 
+   */
+  onItemPurchaseClicked(itemID){
+    console.log("Purchasing ");
+    console.log(itemID);
   }
 
   /**
@@ -142,7 +112,9 @@ export default class ItemShop extends Component {
     const { modalVisible, selectedItemID } = this.state;
 
     // Get the selected item
-    const selectedItem = mockItemStoreData.find(element=>element.id === selectedItemID);
+    const selectedItem = mockItemStoreData.find(
+      element => element.id === selectedItemID
+    );
 
     return (
       <View style={{ flex: 1 }}>
@@ -154,11 +126,12 @@ export default class ItemShop extends Component {
           <FlatList
             data={mockItemStoreData}
             renderItem={({ item }) => (
-              <ListItem
+              <ShopListItem
                 name={item.name}
                 price={item.price}
                 itemID={item.id}
                 onItemClicked={this.onItemClicked}
+                onItemPurchaseClicked={this.onItemPurchaseClicked}
               />
             )}
             keyExtractor={item => item.id}
@@ -172,7 +145,11 @@ export default class ItemShop extends Component {
             this.setModalVisibility(false);
           }}
         >
-          <DescriptionModal name={selectedItemID? selectedItem.name: null} description={selectedItem? selectedItem.description: null} setModalVisible={this.setModalVisibility}/>
+          <DescriptionModal
+            name={selectedItemID ? selectedItem.name : null}
+            description={selectedItem ? selectedItem.description : null}
+            setModalVisible={this.setModalVisibility}
+          />
         </Modal>
 
         <View style={viewStyles.Footer} />
