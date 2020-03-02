@@ -91,18 +91,18 @@ state = {
   data: DATA
 };
 
-// componentDidMount() {
-//   // simulate new users being added to leaderboard
-//   setInterval(() => {
-//     const newData = {
-//       name: "New User Data!!",
-//       score: Math.floor(Math.random() * 100).toString(),
-//       iconUrl:
-//         "https://www.shareicon.net/data/128x128/2016/09/15/829473_man_512x512.png"
-//     };
-//     this.setState({ data: this.state.data.concat(newData) });
-//   }, 3000);
-// }
+componentDidMount() {
+  // simulate new users being added to leaderboard
+  setInterval(() => {
+    const newData = {
+      name: "New User Data!!",
+      score: Math.floor(Math.random() * 100).toString(),
+      iconUrl:
+        "https://www.shareicon.net/data/128x128/2016/09/15/829473_man_512x512.png"
+    };
+    this.setState({ data: this.state.data.concat(newData) });
+  }, 3000);
+}
 
 alert = (title, body) => {
   Alert.alert(title, body, [{ text: "OK", onPress: () => {} }], {
