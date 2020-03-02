@@ -10,6 +10,7 @@ import {
 
 import DescriptionModal from "./DescriptionModal";
 import ShopListItem from './ShopListItem';
+import PurchaseModal from "./PurchaseModal";
 
 // Styles corresponding to the different views on the page
 const viewStyles = StyleSheet.create({
@@ -71,6 +72,7 @@ export default class ItemShop extends Component {
 
     this.state = {
       modalVisible: false,
+      purchaseModalVisible: false,
       selectedItemID: null
     };
 
@@ -98,6 +100,7 @@ export default class ItemShop extends Component {
   onItemPurchaseClicked(itemID){
     console.log("Purchasing ");
     console.log(itemID);
+    this.setState({purchaseModalVisible: true, selectedItemID: itemID});
   }
 
   /**
@@ -150,6 +153,20 @@ export default class ItemShop extends Component {
             description={selectedItem ? selectedItem.description : null}
             setModalVisible={this.setModalVisibility}
           />
+        </Modal>
+
+        <Modal
+          animationType="slide"
+          visible={this.state.purchaseModalVisible}
+          onRequestClose={()=>{
+            this.setState({purchaseModalVisible: false});
+          }}
+        >
+            <PurchaseModal
+              name={selectedItemID ? selectedItem.name: null}
+              description={null}
+              closeModal={()=>{this.setState({purchaseModalVisible: false})}}
+            />
         </Modal>
 
         <View style={viewStyles.Footer} />
