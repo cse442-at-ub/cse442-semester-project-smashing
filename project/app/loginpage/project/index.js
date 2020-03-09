@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, FlatList, StyleSheet, Text,TextInput, Dimensions, Alert, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
-import { FormLabel, FormInput, FormValidationMessage} from 'react-native-elements'
+import { View, FlatList, StyleSheet, Text, TextInput, Dimensions, TouchableOpacity } from 'react-native';
 import { LinearGradient } from "expo";
 
+
+var valid;
 const data = [
   { key: 'UserLabel', val: "Username", type: 'text' },
   { key: 'PassLabel', val: "Password", type: 'text' },
@@ -10,18 +11,71 @@ const data = [
 ];
 const numColumns = 1;
 
+
 export default class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      Username: '',
+      Password: '',
+    }
+  }
+  _onPressButton = () => {
+
+    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/user.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        form: 'login',
+        username: this.state.Username,
+        password: this.state.Password,
+      })
+    })
+
+      .then((response) => response.json())
+      
+      .then((response) => {
+        if (response.status === "false") {
+          console.log("Data sent");
+          this.props.parentCallback(true);
+        } else {
+          alert("Invalid login info. Try again.");
+        }
+
+      })
+      .done();
+  }
+
   renderItem = ({ item }) => {
     if (item.type === "text") {
-      return (
-        <View style={styles.item}>
-        <TextInput 
-      style={{color: "white"}}
-      placeholder={item.val}
-      maxLength={20}
-      />
-        </View>
-      )
+      if (item.val === "Username") {
+        return (
+          <View style={styles.item}>
+            <TextInput
+              hitSlop={{ top: 10, left: 2000, bottom: 10, right: 2000 }}
+              style={{ color: "white" }}
+              placeholder={item.val}
+              maxLength={15}
+              onChangeText={(Username) => { this.setState({ Username: Username }) }}
+            />
+          </View>
+        )
+      } else {
+        return (
+          <View style={styles.item}>
+            <TextInput
+              hitSlop={{ top: 10, left: 2000, bottom: 10, right: 2000 }}
+              secureTextEntry={true}
+              style={{ color: "white" }}
+              placeholder={item.val}
+              maxLength={25}
+              onChangeText={(Password) => { this.setState({ Password: Password }) }}
+            />
+          </View>
+        )
+      }
     } else if (item.type === "label") {
       return (
         <View style={styles.label}>
@@ -31,11 +85,11 @@ export default class Login extends Component {
     } else if (item.type === "button") {
       return (
         <View style={styles.button}>
-          <TouchableOpacity 
-          hitSlop={{top: 10, left: 2000, bottom: 10, right: 2000}}
-          onPress={() => Alert.alert('pwned')}
+          <TouchableOpacity
+            hitSlop={{ top: 10, left: 2000, bottom: 10, right: 2000 }}
+            onPress={() => { this._onPressButton() }}
           >
-            <Text style={{color: "white"}}>{item.val}</Text>
+            <Text style={{ color: "white" }}>{item.val}</Text>
           </TouchableOpacity>
         </View>
       )
@@ -50,15 +104,15 @@ export default class Login extends Component {
         <React.Fragment>
           <View style={styles.margin}>
             <Text style={styles.title}>
-              Log me DAFUQ in
+              Login
         </Text>
           </View>
-            <FlatList
-              data={data}
-              style={styles.container}
-              renderItem={this.renderItem}
-              numColumns={numColumns}
-            />
+          <FlatList
+            data={data}
+            style={styles.container}
+            renderItem={this.renderItem}
+            numColumns={numColumns}
+          />
         </React.Fragment>
       </LinearGradient>
     );

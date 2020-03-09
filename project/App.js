@@ -13,14 +13,17 @@ import Login from "./app/loginpage"
 import Register from "./app/register"
 
 EStyleSheet.build();
+var validLogin = false
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       sceneVisible: false,
-      scene: null 
+      scene: null,
+      loggedin: false,
     };
+    this.callbackFunction = this.callbackFunction.bind(this);
   }
 
   mountScene = scene => {
@@ -38,10 +41,39 @@ export default class App extends Component {
     });
   };
 
+  callbackFunction = (loginData) => {
+    console.log(loginData);
+    console.log("calling callback function");      
+    this.setState({loggedin: loginData})
+    
+    this.unMountScene();
+    this.mountScene(<TableOfContents
+      sceneVisible={this.state.sceneVisible}
+      contents={{
+        heading: "Smashing",
+        items: [
+          Start(this.mountScene),
+          LeaderBoards(this.mountScene),
+          FriendsList(this.mountScene),
+          ItemShop(this.mountScene),
+          Stats(this.mountScene),
+          CalorieCounter(this.mountScene),
+        ]
+      }}
+    />);
+  };
+
   render() {
-    let validLogin = false
+    console.log(this.state.loggedin);
+    if (this.state.loggedin === true){
+      validLogin = true;
+      console.log("CHANGING")
+    } else {
+      validlogin = false;
+    }
 
     if (validLogin === true) {
+      console.log("Valid Login");
       return (
         <View style={{ flex: 1 }}>
           <TableOfContents
@@ -74,14 +106,15 @@ export default class App extends Component {
       );
     }
     else{
+      console.log("Not Valid Login");
       return (
         <View style={{ flex: 1 }}>
           <TableOfContents
             sceneVisible={this.state.sceneVisible}
             contents={{
-              heading: "TrynaSmash?",
+              heading: "Smashing",
               items: [
-                Login(this.mountScene),
+                Login(this.mountScene, this.callbackFunction),
                 Register(this.mountScene),
               ]
             }}
