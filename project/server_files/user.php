@@ -39,6 +39,7 @@
                  //creates array to convert to json file
                 $data = array(
                 "status" => "true",
+                "id" => $user[0]['ID'],
                 "username" => $user[0]['Username'],
                 "password" => $user[0]['Password'],
                 "currency" => $user[0]['Currency'],
@@ -64,8 +65,9 @@
         $user = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
         if (empty($user)){ // user name is unique
-            $stmt = $conn->prepare("INSERT INTO USER_DATA (Username, Password) VALUE (?, ?)");
-            $stmt->bind_param("ss",  $decoded['username'], $decoded['password']);
+            $stmt = $conn->prepare("INSERT INTO USER_DATA (ID, Username, Password) VALUE (?, ?, ?)");
+            $hash = md5($decoded['username']);
+            $stmt->bind_param("sss", $hash, $decoded['username'], $decoded['password']);
             $result = $stmt->execute();
             //good to check if insert was successful
             if (!$result) {
@@ -73,14 +75,14 @@
             }
             $data = array(
                  "status" => "true",
-                 "message" => "account successfully created"
+                 "message" => "Account Successfully Created"
                 );
 
         }else{
             $data = array(
                 "status" => "false",
                 "reason" => "falied to insert into db",
-                "message" => "Username already exists"
+                "message" => "Username Already Exists"
                 );
         }
 
