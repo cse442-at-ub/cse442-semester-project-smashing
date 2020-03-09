@@ -73,12 +73,27 @@ export default class ItemShop extends Component {
     this.state = {
       modalVisible: false,
       purchaseModalVisible: false,
-      selectedItemID: null
+      selectedItemID: null,
+      checkoutItems: []
     };
 
     this.setModalVisibility = this.setModalVisibility.bind(this);
     this.onItemClicked = this.onItemClicked.bind(this);
     this.onItemPurchaseClicked = this.onItemPurchaseClicked.bind(this);
+    this.onItemConfirmPurchaseClicked = this.onItemConfirmPurchaseClicked.bind(this);
+  }
+
+  /**
+   * Adds the item id to the shopping cart
+   * @param {string} itemID 
+   */
+  onItemConfirmPurchaseClicked(itemID) {
+    let {checkoutItems} = this.state;
+    // Add the item to the checkout list
+    checkoutItems.push(itemID);
+
+    // Reset the state
+    this.setState({checkoutItems});
   }
 
   /**
@@ -98,8 +113,6 @@ export default class ItemShop extends Component {
    * @param {String} itemID 
    */
   onItemPurchaseClicked(itemID){
-    console.log("Purchasing ");
-    console.log(itemID);
     this.setState({purchaseModalVisible: true, selectedItemID: itemID});
   }
 
@@ -113,6 +126,9 @@ export default class ItemShop extends Component {
 
   render() {
     const { modalVisible, selectedItemID } = this.state;
+
+    // Print the checkout items
+    console.log(this.state.checkoutItems);
 
     // Get the selected item
     const selectedItem = mockItemStoreData.find(
@@ -165,7 +181,9 @@ export default class ItemShop extends Component {
             <PurchaseModal
               name={selectedItemID ? selectedItem.name: null}
               description={null}
+              itemID={selectedItemID}
               closeModal={()=>{this.setState({purchaseModalVisible: false})}}
+              onConfirm={this.onItemConfirmPurchaseClicked}
             />
         </Modal>
 

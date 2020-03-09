@@ -25,10 +25,21 @@ class PurchaseModal extends Component {
     super(props);
 
     this.onCloseButtonPressed = this.onCloseButtonPressed.bind(this);
+    this.onCancelButtonPressed = this.onCancelButtonPressed.bind(this);
+    this.onConfirmButtonPressed = this.onConfirmButtonPressed.bind(this);
   }
 
   onCloseButtonPressed(){
       this.props.closeModal();
+  }
+
+  onCancelButtonPressed(){
+    this.props.closeModal();
+  }
+
+  onConfirmButtonPressed(){
+    this.props.onConfirm(this.props.itemID);
+    this.props.closeModal();
   }
 
   render() {
@@ -43,11 +54,11 @@ class PurchaseModal extends Component {
         <View style={viewStyles.Footer}>
           <Button
             title="Cancel"
-            onPress={this.onCloseButtonPressed}
+            onPress={this.onCancelButtonPressed}
           />
           <Button
             title="Confirm"
-            onPress={this.onCloseButtonPressed}
+            onPress={this.onConfirmButtonPressed}
           />
         </View>
       </View>
