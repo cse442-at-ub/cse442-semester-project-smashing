@@ -183,7 +183,6 @@ const DATA = [
 {
   name: "Justin",
   score: 41,
- 
 },
 {
   name: "Matt",
