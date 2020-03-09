@@ -4,13 +4,13 @@ import {
   Text,
   View,
   FlatList,
-  Modal,
-  TouchableOpacity
+  Modal
 } from "react-native";
 
 import DescriptionModal from "./DescriptionModal";
 import ShopListItem from './ShopListItem';
 import PurchaseModal from "./PurchaseModal";
+import NavigationButtons from "./NavigationButtons";
 
 // Styles corresponding to the different views on the page
 const viewStyles = StyleSheet.create({
@@ -22,7 +22,6 @@ const viewStyles = StyleSheet.create({
   },
   Footer: {
     flex: 1,
-    backgroundColor: "red"
   }
 });
 
@@ -188,7 +187,8 @@ export default class ItemShop extends Component {
         </Modal>
 
         <View style={viewStyles.Footer} />
-      </View>
+          <NavigationButtons />
+        </View>
     );
   }
 }
