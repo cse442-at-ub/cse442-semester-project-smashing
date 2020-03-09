@@ -9,18 +9,21 @@ import FriendsList from "./app/friendslist";
 import ItemShop from "./app/itemshop";
 import Stats from "./app/stats";
 import CalorieCounter from "./app/caloriecounter"
-
-
-
+import Login from "./app/loginpage"
+import Register from "./app/register"
 
 EStyleSheet.build();
+
+
+
+
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       sceneVisible: false,
-      scene: null
+      scene: null 
     };
   }
 
@@ -28,7 +31,7 @@ export default class App extends Component {
     this.setState({
       sceneVisible: true,
       scene: scene
-      
+
     });
   };
 
@@ -40,35 +43,68 @@ export default class App extends Component {
   };
 
   render() {
-    return (
-      <View style={{ flex: 1 }}>
-        <TableOfContents
-          sceneVisible={this.state.sceneVisible}
-          contents={{
-            heading: "Smashing",
-            items: [
-              Start(this.mountScene),
-              LeaderBoards(this.mountScene),
-	            FriendsList(this.mountScene),
-              ItemShop(this.mountScene),
-              Stats(this.mountScene),
-              CalorieCounter(this.mountScene),
-            ]
-          }}
-        />
-        <Modal
-        
-          animationType={"slide"}
-          transparent={false}
-          visible={this.state.sceneVisible}
-          onRequestClose={_ => {}}
-        >
-          {this.state.scene}
+    let validLogin = false
 
-          <BackButton onPress={this.unMountScene} />
-        </Modal>
-        
-      </View>
-    );
+    if (validLogin === true) {
+      return (
+        <View style={{ flex: 1 }}>
+          <TableOfContents
+            sceneVisible={this.state.sceneVisible}
+            contents={{
+              heading: "Smashing",
+              items: [
+                Start(this.mountScene),
+                LeaderBoards(this.mountScene),
+                FriendsList(this.mountScene),
+                ItemShop(this.mountScene),
+                Stats(this.mountScene),
+                CalorieCounter(this.mountScene),
+              ]
+            }}
+          />
+          <Modal
+
+            animationType={"slide"}
+            transparent={false}
+            visible={this.state.sceneVisible}
+            onRequestClose={_ => { }}
+          >
+            {this.state.scene}
+
+            <BackButton onPress={this.unMountScene} />
+          </Modal>
+
+        </View>
+      );
+    }
+    else{
+      return (
+        <View style={{ flex: 1 }}>
+          <TableOfContents
+            sceneVisible={this.state.sceneVisible}
+            contents={{
+              heading: "TrynaSmash?",
+              items: [
+                Login(this.mountScene),
+                Register(this.mountScene),
+              ]
+            }}
+          />
+          <Modal
+
+            animationType={"slide"}
+            transparent={false}
+            visible={this.state.sceneVisible}
+            onRequestClose={_ => { }}
+          >
+            {this.state.scene}
+
+            <BackButton onPress={this.unMountScene} />
+          </Modal>
+
+        </View>
+      );
+    }
+    
   }
 }

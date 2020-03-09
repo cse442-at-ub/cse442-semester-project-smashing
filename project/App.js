@@ -11,16 +11,21 @@ import Stats from "./app/stats";
 import CalorieCounter from "./app/caloriecounter"
 import Login from "./app/loginpage"
 import Register from "./app/register"
+import { HelpBlock } from "react-bootstrap";
 
 EStyleSheet.build();
+
+
 
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       sceneVisible: false,
-      scene: null 
+      scene: null, 
+     
     };
+   
   }
 
   mountScene = scene => {
@@ -39,8 +44,9 @@ export default class App extends Component {
   };
 
   render() {
+   
     let validLogin = false
-
+    
     if (validLogin === true) {
       return (
         <View style={{ flex: 1 }}>
