@@ -15,6 +15,8 @@ export default class BackButton extends Component {
 
     if (this.props.onPress)
       this.props.onPress();
+
+    await this.refs.back.bounceIn(300);
   };
 
   render() {
@@ -37,7 +39,7 @@ export default class BackButton extends Component {
 }
 
 const css = EStyleSheet.create({
-  $marginTop: "1.5%",
+  $marginTop: "5.0%",
   button: {
     margin: "$marginTop",
     position: "absolute"

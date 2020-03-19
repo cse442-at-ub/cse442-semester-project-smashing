@@ -22,7 +22,6 @@ export default class Register extends Component {
       password: '',
       confirm: '',
       message: '',
-      toLogin: '',
     }
   }
 
@@ -49,7 +48,7 @@ export default class Register extends Component {
         .then((res) => {
           if (res.message === 'Account Successfully Created') {
             alert(res.message),
-              this.state.toLogin = true
+            this.props.parentCallback(true);
           } else {
             alert(res.message)
           }
