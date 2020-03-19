@@ -23,9 +23,7 @@ export default class App extends Component {
     this.state = {
       sceneVisible: false,
       scene: null, 
-     
-    };
-   
+    }; 
   }
 
   mountScene = scene => {

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, Text, TextInput, Dimensions, Alert, TouchableOpacity } from 'react-native';
 import { LinearGradient } from "expo";
+import Login from '../../loginpage/project';
+
+
 
 const data = [
   { key: 'UserLabel', val: "Username", type: 'text' },
@@ -19,42 +22,49 @@ export default class Register extends Component {
       password: '',
       confirm: '',
       message: '',
+      toLogin: '',
     }
   }
 
 
+
+
+
+
   onPressButton = () => {
-    if (this.state.password === this.state.confirm)
-    {
+    if (this.state.password === this.state.confirm) {
       console.log(this.state)
-    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/user.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type':'application/json',
-      },
-      body: JSON.stringify({
-        form: 'register',
-        username: this.state.username,
-        password: this.state.password,
-        message: '',
-      })
-    }).then((response) => response.json())
-    .then((res) => { 
-      alert(res.message)
-    })
+      fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/user.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          form: 'register',
+          username: this.state.username,
+          password: this.state.password,
+          message: '',
+        })
+      }).then((response) => response.json())
+        .then((res) => {
+          if (res.message === 'Account Successfully Created') {
+            alert(res.message),
+              this.state.toLogin = true
+          } else {
+            alert(res.message)
+          }
+        })
+    }
+    else {
+      alert("Passwords Don't Match, Try Again")
+    }
   }
-  else {
-    alert("Passwords Don't Match, Try Again")
-  }
-}
 
-
-  
 
 
 
   renderItem = ({ item }) => {
-    let { username, password ,confirm} = this.state;
+    let { username, password, confirm } = this.state;
     if (item.type === "text") {
       if (item.val == "Username") {
         return (
@@ -72,7 +82,7 @@ export default class Register extends Component {
         return (
           <View style={styles.item}>
             <TextInput
-              secureTextEntry = {true}
+              secureTextEntry={true}
               style={{ color: "white" }}
               placeholder={item.val}
               maxLength={25}
@@ -85,7 +95,7 @@ export default class Register extends Component {
         return (
           <View style={styles.item}>
             <TextInput
-              secureTextEntry = {true}
+              secureTextEntry={true}
               style={{ color: "white" }}
               placeholder={item.val}
               maxLength={25}
@@ -93,7 +103,7 @@ export default class Register extends Component {
             />
           </View>
         )
-      }  
+      }
     } else if (item.type === "label") {
       return (
         <View style={styles.label}>
@@ -115,26 +125,35 @@ export default class Register extends Component {
     }
   }
   render() {
-    return (
-      <LinearGradient
-        colors={["#283c86", "#45a247"]}
-        style={styles.linearGradient}
-      >
-        <React.Fragment>
-          <View style={styles.margin}>
-            <Text style={styles.title}>
-              Create Account
+    if (this.state.toLogin === true) {
+      //return <Redirect to='/Login' />
+      return(
+        this.state.View = <Login/>
+      )
+    }
+    else {
+      return (
+        <LinearGradient
+          colors={["#283c86", "#45a247"]}
+          style={styles.linearGradient}
+        >
+          <React.Fragment>
+            <View style={styles.margin}>
+              <Text style={styles.title}>
+                Create Account
         </Text>
-          </View>
-          <FlatList
-            data={data}
-            style={styles.container}
-            renderItem={this.renderItem}
-            numColumns={numColumns}
-          />
-        </React.Fragment>
-      </LinearGradient>
-    );
+            </View>
+            <FlatList
+              data={data}
+              style={styles.container}
+              renderItem={this.renderItem}
+              numColumns={numColumns}
+            />
+          </React.Fragment>
+        </LinearGradient>
+
+      );
+    }
   }
 }
 
