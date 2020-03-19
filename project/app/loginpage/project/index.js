@@ -37,7 +37,7 @@ export default class Login extends Component {
       .then((response) => response.json())
       
       .then((response) => {
-        if (response.status === "false") {
+        if (response.status === "true") {
           console.log("Data sent");
           this.props.parentCallback(true);
         } else {

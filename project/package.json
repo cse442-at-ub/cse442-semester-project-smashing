@@ -39,6 +39,6 @@
     "save": "^2.4.0"
   },
   "devDependencies": {
-    "babel-preset-expo": "^5.0.0"
+    "babel-preset-expo": "^5.2.0"
   }
 }
