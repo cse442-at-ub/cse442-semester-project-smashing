@@ -1,16 +1,11 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  Modal,
-  TouchableOpacity
-} from "react-native";
+import { StyleSheet, Text, View, Modal } from "react-native";
 
+import CheckoutPage from "./CheckoutPage";
 import DescriptionModal from "./DescriptionModal";
-import ShopListItem from './ShopListItem';
 import PurchaseModal from "./PurchaseModal";
+import NavigationButtons, { Pages, PAGES } from "./NavigationButtons";
+import ShopList from "./ShopList";
 
 // Styles corresponding to the different views on the page
 const viewStyles = StyleSheet.create({
@@ -21,8 +16,7 @@ const viewStyles = StyleSheet.create({
     flex: 8
   },
   Footer: {
-    flex: 1,
-    backgroundColor: "red"
+    flex: 1
   }
 });
 
@@ -74,26 +68,32 @@ export default class ItemShop extends Component {
       modalVisible: false,
       purchaseModalVisible: false,
       selectedItemID: null,
-      checkoutItems: []
+      checkoutItems: [],
+      page: PAGES.BROWSE
     };
 
-    this.setModalVisibility = this.setModalVisibility.bind(this);
+    this.getPageToRender = this.getPageToRender.bind(this);
     this.onItemClicked = this.onItemClicked.bind(this);
+    this.onItemConfirmPurchaseClicked = this.onItemConfirmPurchaseClicked.bind(
+      this
+    );
     this.onItemPurchaseClicked = this.onItemPurchaseClicked.bind(this);
-    this.onItemConfirmPurchaseClicked = this.onItemConfirmPurchaseClicked.bind(this);
+    this.setModalVisibility = this.setModalVisibility.bind(this);
+    this.setPage = this.setPage.bind(this);
+    this.onRemoveItem = this.onRemoveItem.bind(this);
   }
 
   /**
    * Adds the item id to the shopping cart
-   * @param {string} itemID 
+   * @param {string} itemID
    */
   onItemConfirmPurchaseClicked(itemID) {
-    let {checkoutItems} = this.state;
+    let { checkoutItems } = this.state;
     // Add the item to the checkout list
     checkoutItems.push(itemID);
 
     // Reset the state
-    this.setState({checkoutItems});
+    this.setState({ checkoutItems });
   }
 
   /**
@@ -109,11 +109,11 @@ export default class ItemShop extends Component {
 
   /**
    * Purchase for the itemID was selected.
-   * 
-   * @param {String} itemID 
+   *
+   * @param {String} itemID
    */
-  onItemPurchaseClicked(itemID){
-    this.setState({purchaseModalVisible: true, selectedItemID: itemID});
+  onItemPurchaseClicked(itemID) {
+    this.setState({ purchaseModalVisible: true, selectedItemID: itemID });
   }
 
   /**
@@ -124,11 +124,59 @@ export default class ItemShop extends Component {
     this.setState({ modalVisible: visible });
   }
 
+  /**
+   * Changes the viewed page
+   *
+   * Page values are determined by the navigation buttons. You
+   * can see the values in the PAGES export in NavigationButtons.js
+   *
+   * @param {integer} page
+   */
+  setPage(page) {
+    this.setState({ page });
+  }
+
+  onRemoveItem(itemID) {
+    console.log("Removing: ", itemID);
+    let { checkoutItems } = this.state;
+    console.log(checkoutItems);
+    checkoutItems = checkoutItems.filter(item => {
+      return item !== itemID;
+    });
+    console.log(checkoutItems);
+    this.setState({ checkoutItems });
+  }
+
+  /**
+   * Gets the page to render
+   */
+  getPageToRender() {
+    const { page, checkoutItems } = this.state;
+
+    switch (page) {
+      case PAGES.BROWSE:
+        return (
+          <ShopList
+            data={mockItemStoreData}
+            onItemClicked={this.onItemClicked}
+            onItemPurchaseClicked={this.onItemPurchaseClicked}
+          />
+        );
+      case PAGES.CHECKOUT:
+        return (
+          <CheckoutPage
+            data={mockItemStoreData}
+            checkoutItems={checkoutItems}
+            onRemoveItem={this.onRemoveItem}
+          />
+        );
+      default:
+        return null;
+    }
+  }
+
   render() {
     const { modalVisible, selectedItemID } = this.state;
-
-    // Print the checkout items
-    console.log(this.state.checkoutItems);
 
     // Get the selected item
     const selectedItem = mockItemStoreData.find(
@@ -141,21 +189,7 @@ export default class ItemShop extends Component {
           <Text style={headerStyles.Title}>Item Shop!</Text>
         </View>
 
-        <View style={viewStyles.Body}>
-          <FlatList
-            data={mockItemStoreData}
-            renderItem={({ item }) => (
-              <ShopListItem
-                name={item.name}
-                price={item.price}
-                itemID={item.id}
-                onItemClicked={this.onItemClicked}
-                onItemPurchaseClicked={this.onItemPurchaseClicked}
-              />
-            )}
-            keyExtractor={item => item.id}
-          />
-        </View>
+        <View style={viewStyles.Body}>{this.getPageToRender()}</View>
 
         <Modal
           animationType="slide"
@@ -174,20 +208,23 @@ export default class ItemShop extends Component {
         <Modal
           animationType="slide"
           visible={this.state.purchaseModalVisible}
-          onRequestClose={()=>{
-            this.setState({purchaseModalVisible: false});
+          onRequestClose={() => {
+            this.setState({ purchaseModalVisible: false });
           }}
         >
-            <PurchaseModal
-              name={selectedItemID ? selectedItem.name: null}
-              description={null}
-              itemID={selectedItemID}
-              closeModal={()=>{this.setState({purchaseModalVisible: false})}}
-              onConfirm={this.onItemConfirmPurchaseClicked}
-            />
+          <PurchaseModal
+            name={selectedItemID ? selectedItem.name : null}
+            description={null}
+            itemID={selectedItemID}
+            closeModal={() => {
+              this.setState({ purchaseModalVisible: false });
+            }}
+            onConfirm={this.onItemConfirmPurchaseClicked}
+          />
         </Modal>
 
         <View style={viewStyles.Footer} />
+        <NavigationButtons onPageSelect={this.setPage} />
       </View>
     );
   }
