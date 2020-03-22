@@ -141,10 +141,10 @@ export default class ItemShop extends Component {
     let { checkoutItems } = this.state;
     console.log(checkoutItems);
     checkoutItems = checkoutItems.filter(item => {
-      return (item !== itemID);
+      return item !== itemID;
     });
     console.log(checkoutItems);
-    this.setState({checkoutItems});
+    this.setState({ checkoutItems });
   }
 
   /**

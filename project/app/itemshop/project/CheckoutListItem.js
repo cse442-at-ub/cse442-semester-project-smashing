@@ -37,7 +37,7 @@ class CheckoutListItem extends Component {
             title="REMOVE"
             type="outline"
             onPress={() => {
-              this.props.removeItem(this.props.itemID)
+              this.props.removeItem(this.props.itemID);
             }}
           />
         </View>

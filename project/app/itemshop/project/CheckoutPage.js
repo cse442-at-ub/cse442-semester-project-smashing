@@ -1,6 +1,24 @@
 import React, { Component } from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 import CheckoutList from "./CheckoutList";
+
+const style = StyleSheet.create({
+  Container: {
+    alignItems: "stretch",
+    flexDirection: "column"
+  },
+  List: {
+    flex: 9,
+    alignItems: "stretch"
+  },
+  PriceText: {
+    flex: 1,
+    alignItems: "stretch",
+    fontSize: 30,
+    fontWeight: "bold",
+  }
+});
 
 export default class CheckoutPage extends Component {
   constructor(props) {
@@ -10,7 +28,7 @@ export default class CheckoutPage extends Component {
     this.removeItem = this.removeItem.bind(this);
   }
 
-  removeItem(id){
+  removeItem(id) {
     this.props.onRemoveItem(id);
   }
 
@@ -21,13 +39,23 @@ export default class CheckoutPage extends Component {
     return items;
   }
 
+  getTotalPrice (items){
+    return items.reduce((accumulator, item)=>{return accumulator + item.price}, 0);
+  }
+
   render() {
     const items = this.getItemData();
+    const price = this.getTotalPrice(items);
+
     return (
-        <CheckoutList
-            items={items}
-            onRemoveItem={this.removeItem}
-        />
-        );
+      <View styles={style.Container}>
+        <View styles={style.List}>
+          <CheckoutList items={items} onRemoveItem={this.removeItem} />
+        </View>
+        <View styles={style.PriceText}>
+          <Text styles={style.PriceText}>Price: {price}</Text>
+        </View>
+      </View>
+    );
   }
 }
