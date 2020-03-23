@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 const bodyStyles = StyleSheet.create({
   ListView: {
@@ -32,7 +27,7 @@ const bodyStyles = StyleSheet.create({
 /**
  * List element for item shop
  */
-class ShopListItem extends React.Component {
+class ShopListItem extends Component {
   render() {
     return (
       <View style={bodyStyles.ListView}>
@@ -46,10 +41,11 @@ class ShopListItem extends React.Component {
               <Text style={bodyStyles.ListItemName}>{this.props.name}</Text>
             </TouchableOpacity>
           </View>
+
           <View style={bodyStyles.ListItemPriceView}>
             <TouchableOpacity
               onPress={() => {
-                  this.props.onItemPurchaseClicked(this.props.itemID);
+                this.props.onItemPurchaseClicked(this.props.itemID);
               }}
             >
               <Text style={bodyStyles.ListItemPriceText}>

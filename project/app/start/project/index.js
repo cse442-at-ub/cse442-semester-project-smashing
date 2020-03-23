@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StatusBar, StyleSheet, Dimensions } from "react-native";
+import { Text, View, StatusBar, StyleSheet, Dimensions } from "react-native";
 import { GameEngine } from "react-native-game-engine";
 import { Physics, MoveBox, RandMove } from "./systems";
 import { Character } from "./renderers";
@@ -56,6 +56,17 @@ export default class RigidBodies extends Component {
         }}
       >
         <StatusBar hidden={true} />
+      <View
+      style={{
+        paddingTop: 50,
+        backgroundColor: "black",
+        alignItems: "center"
+      }}
+    >
+      <Text style={{ fontSize: 20, color: "white", paddingBottom: 10 }}>
+        Calories Burnt: 500 & Daily Rewards: 700
+      </Text>
+    </View>
       </GameEngine>
     );
   }
