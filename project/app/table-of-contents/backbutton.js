@@ -15,8 +15,6 @@ export default class BackButton extends Component {
 
     if (this.props.onPress)
       this.props.onPress();
-
-    await this.refs.back.bounceIn(300);
   };
 
   render() {
