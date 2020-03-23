@@ -37,7 +37,7 @@ export default class BackButton extends Component {
 }
 
 const css = EStyleSheet.create({
-  $marginTop: "1.5%",
+  $marginTop: "5.0%",
   button: {
     margin: "$marginTop",
     position: "absolute"

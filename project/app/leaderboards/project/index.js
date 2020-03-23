@@ -116,6 +116,7 @@ render() {
     sortBy: "score",
     data: this.state.data,
     icon: "iconUrl",
+    icon2: "l",
     onRowPress: (item, index) => {
       this.alert(item.name + " clicked", item.score + " points, wow!");
     },
@@ -133,7 +134,7 @@ render() {
         }}
       >
         <Text style={{ fontSize: 30, color: "white", paddingBottom: 10 }}>
-          Leaderboards
+          Smashing Leaderboards
         </Text>
       </View>
       <Leaderboard {...props} />
@@ -142,79 +143,54 @@ render() {
 }
 }
 
+
 const DATA = [
 {
-  name: "Ishaan",
+  name: "Tester 2",
   score: null,
-  iconUrl:
-    "https://st2.depositphotos.com/1006318/5909/v/950/depositphotos_59094043-stock-illustration-profile-icon-male-avatar.jpg"
+
 },
 {
-  name: "Vikram",
+  name: "Tester 1",
   score: 12,
-  iconUrl:
-    "https://www.shareicon.net/data/128x128/2016/09/15/829473_man_512x512.png"
+
 },
 {
   name: "Travis",
   score: 244,
-  iconUrl: "http://ttsbilisim.com/wp-content/uploads/2014/09/20120807.png"
+  iconUrl: "https://img.icons8.com/office/80/000000/medal2.png",
+ 
+
 },
 {
-  name: "Matt",
+  name: "Tester 3",
   score: 0,
+
+},
+
+{
+  name: "Ishaan",
+  score: 69,
+  
+},
+{
+  name: "Vikram",
+  score: 101,
   iconUrl:
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr27ZFBaclzKcxg2FgJh6xi3Z5-9vP_U1DPcB149bYXxlPKqv-"
+    "https://img.icons8.com/office/80/000000/medal-second-place.png",
+
 },
 {
   name: "Justin",
-  score: 20,
-  iconUrl: "https://static.witei.com/static/img/profile_pics/avatar4.png"
-},
-{
-  name: "Joe Roddy",
-  score: 69,
-  iconUrl: "https://static.witei.com/static/img/profile_pics/avatar4.png"
-},
-{
-  name: "Ericka Johannesburg",
-  score: 101,
-  iconUrl:
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShPis8NLdplTV1AJx40z-KS8zdgaSPaCfNINLtQ-ENdPvrtMWz"
-},
-{
-  name: "Tim Thomas",
   score: 41,
-  iconUrl: "http://ttsbilisim.com/wp-content/uploads/2014/09/20120807.png"
 },
 {
-  name: "John Davis",
+  name: "Matt",
   score: 80,
   iconUrl:
-    "https://cdn.dribbble.com/users/223408/screenshots/2134810/me-dribbble-size-001-001_1x.png"
-},
-{
-  name: "Tina Turner",
-  score: 22,
-  iconUrl:
-    "https://cdn.dribbble.com/users/223408/screenshots/2134810/me-dribbble-size-001-001_1x.png"
-},
-{
-  name: "Harry Reynolds",
-  score: null,
-  iconUrl:
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsSlzi6GEickw2Ft62IdJTfXWsDFrOIbwXhzddXXt4FvsbNGhp"
-},
-{
-  name: "Betty Davis",
-  score: 25,
-  iconUrl:
-    "https://landofblogging.files.wordpress.com/2014/01/bitstripavatarprofilepic.jpeg?w=300&h=300"
-},
-{
-  name: "Lauren Leonard",
-  score: 30,
-  iconUrl:
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr27ZFBaclzKcxg2FgJh6xi3Z5-9vP_U1DPcB149bYXxlPKqv-"
+    "https://img.icons8.com/office/80/000000/medal2-third-place.png",
+    l: 
+    "https://www.shareicon.net/data/128x128/2016/09/15/829473_man_512x512.png"
 }
+
 ];
