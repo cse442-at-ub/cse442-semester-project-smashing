@@ -9,7 +9,6 @@ import { Runner } from 'matter-js';
 
 const DATA = [
   {
-
     key: 'Money',
     name: 'Wallet',
     value: '',
@@ -34,7 +33,6 @@ export default class CalorieCounter extends Component {
     this.state = {
       Wallet: '',
       Todays: 5,
-      Test: 69,
     };
   }
 
@@ -80,21 +78,7 @@ export default class CalorieCounter extends Component {
         </React.Fragment>
       )
     }
-    else if (item.name == "Test") {
-      return (
-        <React.Fragment>
-        <View style={css.separator}>
-        <Text style={css.name}>{item.name}</Text>
-      </View>
-        <View style={css.separator}>
-          <Text
-            style = {css.name}
-            numColumns={2}
-            >{this.state.Test}</Text>
-        </View>
-        </React.Fragment>
-      )
-    }
+    
     
   }
   render() {
