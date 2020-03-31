@@ -78,8 +78,7 @@ export default class CalorieCounter extends Component {
         </React.Fragment>
       )
     }
-    
-    
+
   }
   render() {
     return (
