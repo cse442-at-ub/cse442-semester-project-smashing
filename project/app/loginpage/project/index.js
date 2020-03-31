@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, Text, TextInput, Dimensions, TouchableOpacity } from 'react-native';
 import { LinearGradient } from "expo";
 
+import { connect } from 'react-redux';
+import { loginUser } from '../../redux/actions'; 
 
 var valid;
 const data = [
@@ -12,7 +14,7 @@ const data = [
 const numColumns = 1;
 
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,8 +40,8 @@ export default class Login extends Component {
       
       .then((response) => {
         if (response.status === "true") {
-          console.log("Data sent");
-          this.props.parentCallback(true);
+          this.props.loginUser(this.state.Username);
+          this.props.unMount();
         } else {
           alert("Invalid login info. Try again.");
         }
@@ -96,6 +98,7 @@ export default class Login extends Component {
     }
   }
   render() {
+    console.log(this.props.user);
     return (
       <LinearGradient
         colors={["#283c86", "#45a247"]}
@@ -175,3 +178,16 @@ const styles = StyleSheet.create({
     flex: 1
   },
 });
+
+const mapStateToProps = (state) => {
+  const { user } = state;
+  return {
+    user
+  }
+}
+
+const mapDispatchToProps = {
+  loginUser
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

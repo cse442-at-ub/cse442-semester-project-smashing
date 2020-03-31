@@ -4,6 +4,7 @@ import { LinearGradient } from "expo";
 import Coin from "./assets/coin.gif"
 import { Runner } from 'matter-js';
 
+import { connect } from "react-redux";
 
 
 
@@ -27,7 +28,7 @@ const DATA = [
 
 
 
-export default class CalorieCounter extends Component {
+class CalorieCounter extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -90,6 +91,7 @@ export default class CalorieCounter extends Component {
         
           <View style={css.header}>
             <Text style={css.topfont}>Currency Counter</Text>
+            <Text style={css.topfont}>{this.props.user.username}</Text>
           </View>
        
         <FlatList
@@ -159,3 +161,12 @@ const css = StyleSheet.create({
 
 
 });
+
+const mapStateToProps = (state)=>{
+  const {user} = state;
+  return {
+    user
+  };
+}
+
+export default connect(mapStateToProps, null)(CalorieCounter);

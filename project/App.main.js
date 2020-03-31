@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux';
 
 import { View } from "react-native";
 
@@ -17,19 +18,16 @@ import Stats from "./app/stats";
 
 EStyleSheet.build();
 
-export default class AppMain extends Component {
+class AppMain extends Component {
 
   constructor(props) {
     super(props);
    
     this.state = {
       isMenu: true,
-      loggedIn: false,
-      registered: false,
       scene: this.loggedOutView(),
     };
     
-    this.callbackFunction = this.callbackFunction.bind(this);
     this.mountScene = this.mountScene.bind(this);
     this.unMountScene = this.unMountScene.bind(this);
   }
@@ -56,30 +54,13 @@ export default class AppMain extends Component {
    * We also set the isMenu flag to true, that way the back button does not render.
    */
   unMountScene = () => {
-    const {loggedIn} = this.state;
-
     // If we are logged in, render the logged in view, otherwise the logged out view
-    const nextScene = loggedIn? this.loggedInView(): this.loggedOutView();
+    const nextScene = this.props.user.username? this.loggedInView(): this.loggedOutView();
 
     this.setState({
       scene: nextScene,
       isMenu: true,
     });
-  };
-
-  callbackFunctionRegistered = (regdata) => {
-    this.setState({registered: regdata});
-    //this.setState({loggedIn: true}); // keep this to send to game || erase this to send back to login menu 
-    // Un-mount the scene to return to the table of contents
-    this.unMountScene();
-  };
-
-
-  callbackFunction = (loginData) => {
-    this.setState({loggedIn: loginData});
-    
-    // Un-mount the scene to return to the table of contents
-    this.unMountScene();
   };
 
   render() {
@@ -122,8 +103,8 @@ export default class AppMain extends Component {
           contents={{
             heading: "Smashing",
             items: [
-              Login(this.mountScene, this.callbackFunction),
-              Register(this.mountScene, this.callbackFunctionRegistered),
+              Login(this.mountScene, this.unMountScene),
+              Register(this.mountScene, this.unMountScene),
             ]
           }}
         />
@@ -131,3 +112,12 @@ export default class AppMain extends Component {
     );
   }
 }
+
+const mapStateToProps = (state)=>{
+  const {user} = state;
+  return {
+    user
+  }
+}
+
+export default connect(mapStateToProps, null)(AppMain);

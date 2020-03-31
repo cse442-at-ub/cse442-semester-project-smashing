@@ -48,7 +48,7 @@ export default class Register extends Component {
         .then((res) => {
           if (res.message === 'Account Successfully Created') {
             alert(res.message),
-            this.props.parentCallback(true);
+            this.props.parentCallback();
           } else {
             alert(res.message)
           }

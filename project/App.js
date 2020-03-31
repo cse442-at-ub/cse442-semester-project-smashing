@@ -1,5 +1,14 @@
 import AppMain from './App.main'
 import React from "react";
 
-export default App = ()=>{return <AppMain />}
+import { Provider } from 'react-redux';
+import store from './app/redux/store';
+
+export default App = ()=>{
+    return (
+        <Provider store={store}>
+            <AppMain />
+        </Provider>
+    );
+}
 
