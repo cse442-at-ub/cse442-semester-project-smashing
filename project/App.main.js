@@ -77,7 +77,7 @@ export default class AppMain extends Component {
 
   callbackFunction = (loginData) => {
     this.setState({loggedIn: loginData});
-
+    
     // Un-mount the scene to return to the table of contents
     this.unMountScene();
   };

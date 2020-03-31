@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "/Users/Justin/442SP20"
+		},
+		{
+			"name": "SSH FS - cheshire.cse.buffalo.edu",
+			"uri": "ssh://cheshire.cse.buffalo.edu/"
+		}
+	],
+	"settings": {}
+}
