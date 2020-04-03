@@ -15,8 +15,8 @@
     "bootstrap": "^4.4.1",
     "bunny": "^1.0.1",
     "events": "^3.1.0",
-    "expo": "^33.0.0",
-    "expo-linear-gradient": "~5.0.1",
+    "expo": "^37.0.0",
+    "expo-linear-gradient": "~8.1.0",
     "fs": "0.0.1-security",
     "gl-mat4": "^1.1.4",
     "gl-react": "^3.13.0",
@@ -26,12 +26,12 @@
     "lodash": "^4.17.15",
     "matter-js": "^0.13.0",
     "mysql": "^2.18.1",
-    "react": "^16.13.0",
+    "react": "16.9.0",
     "react-bootstrap": "^1.0.0-beta.17",
     "react-bootstrap-table2-overlay": "^2.0.0",
-    "react-dom": "^16.13.0",
+    "react-dom": "16.9.0",
     "react-motion": "^0.5.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.0.tar.gz",
     "react-native-animatable": "^1.2.2",
     "react-native-donkey-kong": "^0.5.1",
     "react-native-easy-grid": "^0.2.2",
@@ -49,6 +49,6 @@
     "util": "^0.12.2"
   },
   "devDependencies": {
-    "babel-preset-expo": "^5.2.0"
+    "babel-preset-expo": "^8.1.0"
   }
 }

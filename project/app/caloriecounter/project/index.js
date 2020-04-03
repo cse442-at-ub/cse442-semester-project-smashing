@@ -60,7 +60,7 @@ renderItem = ({ item }) => {
           <Text
             style={css.name}
             numColumns={2}
-          >{this.props.user}</Text>
+          >{this.props.user.money}</Text>
         </View>
       </React.Fragment>
     )
