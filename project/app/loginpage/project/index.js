@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, Text, TextInput, Dimensions, TouchableOpacity } from 'react-native';
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
+
 
 import { connect } from 'react-redux';
 import { loginUser , userMoney } from '../../redux/actions'; 
@@ -24,7 +25,6 @@ class Login extends Component {
     }
   }
   _onPressButton = () => {
-
     fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/test/user.php', {
       method: 'POST',
       headers: {
@@ -36,21 +36,15 @@ class Login extends Component {
         password: this.state.Password,
       })
     })
-
       .then((response) => response.json())
-      
       .then((response) => {
         if (response.status === "true") {
-          this.props.loginUser(this.state.Username);
-          alert(response.money)
-          this.setState({Money:response.money})
-          this.props.userMoney(this.state.Money)
-
+          this.props.loginUser(this.state.Username); //username saver this.props.user.username
+          this.props.userMoney(response.money); //money saved this.props.user.money
           this.props.unMount();
         } else {
           alert("Invalid login info. Try again.");
         }
-
       })
       .done();
   }
@@ -185,10 +179,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  const { user , money} = state;
+  const { user} = state;
   return {
     user,
-    money
   }
 }
 

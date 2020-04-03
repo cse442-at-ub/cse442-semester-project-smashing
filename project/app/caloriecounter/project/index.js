@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, Image, FlatList } from 'react-native';
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
+
 import Coin from "./assets/coin.gif"
 
 import { connect } from "react-redux";
@@ -161,10 +162,9 @@ const css = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  const { user, money } = state;
+  const { user } = state;
   return {
     user,
-    money
   };
 }
 

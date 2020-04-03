@@ -114,10 +114,9 @@ class AppMain extends Component {
 }
 
 const mapStateToProps = (state)=>{
-  const {user,money} = state;
+  const {user} = state;
   return {
     user,
-    money
   }
 }
 

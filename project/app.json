@@ -4,7 +4,6 @@
     "description": "A React Native app showcasing some examples using the lightweight https://github.com/bberak/react-native-game-engine library.",
     "slug": "react-native-game-engine-handbook",
     "privacy": "public",
-    "sdkVersion": "37.0.0",
     "platforms": [
       "ios",
       "android"
