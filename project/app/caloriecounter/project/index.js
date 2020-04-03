@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image, FlatList, Fragment } from 'react-native';
+import { Text, View, StyleSheet, Image, FlatList } from 'react-native';
 import { LinearGradient } from "expo";
 import Coin from "./assets/coin.gif"
-import { Runner } from 'matter-js';
 
 import { connect } from "react-redux";
 
@@ -40,14 +39,14 @@ class CalorieCounter extends Component {
 
 
 
-  async componentDidMount() {
+  // async componentDidMount() {
   
-  const headers = { 'Content-Type': 'application/json' }
-  const response = await fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/test/user.php', {headers})
-  const data = await response.json();
-    this.setState({ Wallet: data.money })
-    alert(data.money)
-  }
+  // const headers = { 'Content-Type': 'application/json' }
+  // const response = await fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/test/user.php', {headers})
+  // const data = await response.json();
+  //   this.setState({ Wallet: data.money })
+  //   alert(data.money)
+  // }
 
 renderItem = ({ item }) => {
 
@@ -92,7 +91,7 @@ render() {
       >
         <View style={css.header}>
           <Text style={css.topfont}>Currency Counter</Text>
-          <Text style={css.topfont}>{this.props.user.username}</Text>
+          {/* <Text style={css.topfont}>{this.props.user.username}</Text> */}
         </View>
         <FlatList
           data={DATA}

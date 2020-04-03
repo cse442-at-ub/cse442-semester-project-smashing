@@ -42,8 +42,10 @@ class Login extends Component {
       .then((response) => {
         if (response.status === "true") {
           this.props.loginUser(this.state.Username);
-          this.setState({Money:response.Money})
+          alert(response.money)
+          this.setState({Money:response.money})
           this.props.userMoney(this.state.Money)
+
           this.props.unMount();
         } else {
           alert("Invalid login info. Try again.");
