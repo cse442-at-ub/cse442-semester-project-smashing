@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, Image, FlatList ,Fragment } from 'react-native';
+import { Text, View, StyleSheet, Image, FlatList, Fragment } from 'react-native';
 import { LinearGradient } from "expo";
 import Coin from "./assets/coin.gif"
 import { Runner } from 'matter-js';
@@ -34,78 +34,77 @@ class CalorieCounter extends Component {
     this.state = {
       Wallet: '',
       Todays: 5,
+      Username: '',
     };
   }
 
 
 
   async componentDidMount() {
-    const headers = { 'Content-Type': 'application/json' }
-    const response = await fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/test/user.php', { headers })
-    const data = await response.json();
+  
+  const headers = { 'Content-Type': 'application/json' }
+  const response = await fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/test/user.php', {headers})
+  const data = await response.json();
     this.setState({ Wallet: data.money })
     alert(data.money)
   }
 
-  renderItem = ({ item }) => {
-   
-    if (item.name == "Wallet") {
-      return (
-        <React.Fragment>
-        <View style={css.separator}>
-        <Text style={css.name}>{item.name}</Text>
-      </View>
-        <View style={css.separator}>
-          <Text
-            style = {css.name}
-            numColumns={2}
-          >{this.state.Wallet}</Text>
-        </View>
-        </React.Fragment>
-      )
-    }
-    else if (item.name == "Todays") {
-      return (
-        <React.Fragment>
-        <View style={css.separator}>
-        <Text style={css.name}>{item.name}</Text>
-      </View>
-        <View style={css.separator}>
-          <Text
-            style = {css.name}
-            numColumns={2}
-            >{this.state.Todays}</Text>
-        </View>
-        </React.Fragment>
-      )
-    }
+renderItem = ({ item }) => {
 
-  }
-  render() {
+  if (item.name == "Wallet") {
     return (
       <React.Fragment>
-        <LinearGradient
-          colors={["#283c86", "#45a247"]}
-          style={css.linearGradient}
-        >
-        
-          <View style={css.header}>
-            <Text style={css.topfont}>Currency Counter</Text>
-            <Text style={css.topfont}>{this.props.user.username}</Text>
-          </View>
-       
+        <View style={css.separator}>
+          <Text style={css.name}>{item.name}</Text>
+        </View>
+        <View style={css.separator}>
+          <Text
+            style={css.name}
+            numColumns={2}
+          >{this.props.user}</Text>
+        </View>
+      </React.Fragment>
+    )
+  }
+  else if (item.name == "Todays") {
+    return (
+      <React.Fragment>
+        <View style={css.separator}>
+          <Text style={css.name}>{item.name}</Text>
+        </View>
+        <View style={css.separator}>
+          <Text
+            style={css.name}
+            numColumns={2}
+          >{this.state.Todays}</Text>
+        </View>
+      </React.Fragment>
+    )
+  }
+
+}
+render() {
+  return (
+    <React.Fragment>
+      <LinearGradient
+        colors={["#283c86", "#45a247"]}
+        style={css.linearGradient}
+      >
+        <View style={css.header}>
+          <Text style={css.topfont}>Currency Counter</Text>
+          <Text style={css.topfont}>{this.props.user.username}</Text>
+        </View>
         <FlatList
           data={DATA}
-          //style={css.name}
-          contentContainerStyle={{flexDirection : "column"}}
+          contentContainerStyle={{ flexDirection: "column" }}
           renderItem={this.renderItem}
           numColumns={2}
         />
         <Image style={css.coin} source={Coin} />
-        </LinearGradient>
-      </React.Fragment>
-    );
-  }
+      </LinearGradient>
+    </React.Fragment>
+  );
+}
 }
 
 
@@ -126,7 +125,7 @@ const css = StyleSheet.create({
   separator: {
     flex: 2,
     borderWidth: 3,
-    borderColor:  'black',
+    borderColor: 'black',
     textAlign: "center",
     marginBottom: "40%",
   },
@@ -162,10 +161,11 @@ const css = StyleSheet.create({
 
 });
 
-const mapStateToProps = (state)=>{
-  const {user} = state;
+const mapStateToProps = (state) => {
+  const { user, money } = state;
   return {
-    user
+    user,
+    money
   };
 }
 

@@ -3,7 +3,7 @@ import { View, FlatList, StyleSheet, Text, TextInput, Dimensions, TouchableOpaci
 import { LinearGradient } from "expo";
 
 import { connect } from 'react-redux';
-import { loginUser } from '../../redux/actions'; 
+import { loginUser , userMoney } from '../../redux/actions'; 
 
 var valid;
 const data = [
@@ -20,11 +20,12 @@ class Login extends Component {
     this.state = {
       Username: '',
       Password: '',
+      Money: ''
     }
   }
   _onPressButton = () => {
 
-    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/user.php', {
+    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/test/user.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -41,6 +42,8 @@ class Login extends Component {
       .then((response) => {
         if (response.status === "true") {
           this.props.loginUser(this.state.Username);
+          this.setState({Money:response.Money})
+          this.props.userMoney(this.state.Money)
           this.props.unMount();
         } else {
           alert("Invalid login info. Try again.");
@@ -180,14 +183,16 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-  const { user } = state;
+  const { user , money} = state;
   return {
-    user
+    user,
+    money
   }
 }
 
 const mapDispatchToProps = {
-  loginUser
+  loginUser,
+  userMoney
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

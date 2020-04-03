@@ -11,3 +11,10 @@ export const loginUser = (username)=>({
         username
     }
 });
+
+export const userMoney = (money)=>({
+    type: Actions.USER_MONEY,
+    payload: {
+        money
+    }
+});

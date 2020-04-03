@@ -4,7 +4,8 @@ import user from './reducers/user.js';
 
 const store = createStore(
     combineReducers({
-        user
+        user,
+        money
     })
 );
 
