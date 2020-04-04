@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import Coin from "./assets/coin.gif"
 
 import { connect } from "react-redux";
+import { userMoney } from '../../redux/actions'; 
 
 
 
@@ -32,22 +33,32 @@ class CalorieCounter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      Wallet: '',
+      Money: '',
       Todays: 5,
       Username: '',
     };
   }
 
-
-
-  // async componentDidMount() {
-  
-  // const headers = { 'Content-Type': 'application/json' }
-  // const response = await fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/test/user.php', {headers})
-  // const data = await response.json();
-  //   this.setState({ Wallet: data.money })
-  //   alert(data.money)
-  // }
+componentDidMount = () => {
+  fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/test/user.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      form: 'money',
+      username: this.props.user.username,
+    })
+  }).then((response) => response.json())
+    .then((res) => {
+      if (res.status === 'true') {
+        this.setState({Money: res.money})
+        this.props.userMoney( res.money); //money saved this.props.user.money
+      } else {
+        alert(res.message)
+      }
+    })
+}
 
 renderItem = ({ item }) => {
 
@@ -61,7 +72,7 @@ renderItem = ({ item }) => {
           <Text
             style={css.name}
             numColumns={2}
-          >{this.props.user.money}</Text>
+          >{this.state.Money}</Text>
         </View>
       </React.Fragment>
     )
@@ -156,9 +167,6 @@ const css = StyleSheet.create({
     alignItems: "center",
     marginLeft: "25%"
   },
-
-
-
 });
 
 const mapStateToProps = (state) => {
@@ -168,4 +176,9 @@ const mapStateToProps = (state) => {
   };
 }
 
-export default connect(mapStateToProps, null)(CalorieCounter);
+
+const mapDispatchToProps = {
+  userMoney,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CalorieCounter);
