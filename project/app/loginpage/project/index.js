@@ -25,7 +25,7 @@ class Login extends Component {
     }
   }
   _onPressButton = () => {
-    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/user.php', {
+    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/test/user.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
