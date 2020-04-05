@@ -18,9 +18,9 @@ export default class ShopList extends Component {
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <ShopListItem
-            name={item.name}
-            price={item.price}
-            itemID={item.id}
+            name={item.Name}
+            price={item.Price}
+            itemID={item.ID}
             onItemClicked={this.props.onItemClicked}
             onItemPurchaseClicked={this.props.onItemPurchaseClicked}
           />

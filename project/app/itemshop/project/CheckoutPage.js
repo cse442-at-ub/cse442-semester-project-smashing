@@ -29,18 +29,19 @@ export default class CheckoutPage extends Component {
   }
 
   removeItem(id) {
+    console.log(id);
     this.props.onRemoveItem(id);
   }
 
   getItemData() {
     const items = this.props.data.filter(item => {
-      return this.props.checkoutItems.includes(item.id);
+      return this.props.checkoutItems.includes(item.ID);
     });
     return items;
   }
 
   getTotalPrice (items){
-    return items.reduce((accumulator, item)=>{return accumulator + item.price}, 0);
+    return items.reduce((accumulator, item)=>{return accumulator + item.Price}, 0);
   }
 
   render() {
