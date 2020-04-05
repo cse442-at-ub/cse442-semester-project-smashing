@@ -28,7 +28,7 @@ class CalorieCounter extends Component {
   }
 
   componentDidMount = () => {
-    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/test/user.php', {
+    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/user.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -39,12 +39,8 @@ class CalorieCounter extends Component {
       })
     }).then((response) => response.json())
       .then((res) => {
-        if (res.status === 'true') {
           this.setState({Money: res.money})
-          this.props.userMoney( this.state.Money); //money saved this.props.user.money
-        } else {
-          alert(res.message)
-        }
+          this.props.userMoney(this.state.Money); //money saved this.props.user.money
       })
   }
 
