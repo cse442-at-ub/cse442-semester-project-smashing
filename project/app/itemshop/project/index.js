@@ -7,6 +7,12 @@ import PurchaseModal from "./PurchaseModal";
 import NavigationButtons, { Pages, PAGES } from "./NavigationButtons";
 import ShopList from "./ShopList";
 
+import axios from 'axios';
+
+import { connect } from 'react-redux';
+
+import {loadItems, unloadItems} from "../../redux/actions";
+
 // Styles corresponding to the different views on the page
 const viewStyles = StyleSheet.create({
   Header: {
@@ -29,38 +35,10 @@ const headerStyles = StyleSheet.create({
   }
 });
 
-// Store data
-const mockItemStoreData = [
-  {
-    id: "1",
-    name: "Large Couch",
-    price: 900,
-    description: "A large couch with multiple seat cushions."
-  },
-  {
-    id: "2",
-    name: "Blue Shirt",
-    price: 20,
-    description: "Blue striped shirt."
-  },
-  {
-    id: "3",
-    name: "Brick Wallpaper",
-    price: 200,
-    description: "Brick wallpaper to decorate the room."
-  },
-  {
-    id: "4",
-    name: "Top Hat",
-    price: 1000,
-    description: "A tall hat fit for a president."
-  }
-];
-
 /**
  * Item Shop Page
  */
-export default class ItemShop extends Component {
+class ItemShop extends Component {
   constructor(props) {
     super(props);
 
@@ -83,6 +61,23 @@ export default class ItemShop extends Component {
     this.onRemoveItem = this.onRemoveItem.bind(this);
   }
 
+  componentDidMount(){
+
+    // First unload the previous items, to show we are loading the store
+    this.props.unloadItems();
+
+    axios.get("http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/itemShop/Browse.php")
+    .then(
+      (res) => {
+        // Store the items into redux
+        this.props.loadItems(res.data.items);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
   /**
    * Adds the item id to the shopping cart
    * @param {string} itemID
@@ -91,6 +86,8 @@ export default class ItemShop extends Component {
     let { checkoutItems } = this.state;
     // Add the item to the checkout list
     checkoutItems.push(itemID);
+
+    console.log(checkoutItems);
 
     // Reset the state
     this.setState({ checkoutItems });
@@ -139,11 +136,9 @@ export default class ItemShop extends Component {
   onRemoveItem(itemID) {
     console.log("Removing: ", itemID);
     let { checkoutItems } = this.state;
-    console.log(checkoutItems);
     checkoutItems = checkoutItems.filter(item => {
       return item !== itemID;
     });
-    console.log(checkoutItems);
     this.setState({ checkoutItems });
   }
 
@@ -153,11 +148,16 @@ export default class ItemShop extends Component {
   getPageToRender() {
     const { page, checkoutItems } = this.state;
 
+    const data = this.props.items.data? this.props.items.data: null
+
+    console.log("CHECKOUT ITEMS");
+    console.log(checkoutItems);
+
     switch (page) {
       case PAGES.BROWSE:
         return (
           <ShopList
-            data={mockItemStoreData}
+            data={data}
             onItemClicked={this.onItemClicked}
             onItemPurchaseClicked={this.onItemPurchaseClicked}
           />
@@ -165,7 +165,7 @@ export default class ItemShop extends Component {
       case PAGES.CHECKOUT:
         return (
           <CheckoutPage
-            data={mockItemStoreData}
+            data={data}
             checkoutItems={checkoutItems}
             onRemoveItem={this.onRemoveItem}
           />
@@ -178,10 +178,35 @@ export default class ItemShop extends Component {
   render() {
     const { modalVisible, selectedItemID } = this.state;
 
+    console.log(selectedItemID);
+
     // Get the selected item
-    const selectedItem = mockItemStoreData.find(
-      element => element.id === selectedItemID
-    );
+    const selectedItem = this.props.items.data?
+    this.props.items.data.find(
+      element => element.ID === selectedItemID
+    )
+    :
+    null;
+
+    // Check if we have the store data
+    if(!this.props.items.data){
+      return (
+        <View style={{ flex: 1 }}>
+          <View style={viewStyles.Header}>
+            <Text style={headerStyles.Title}>Item Shop!</Text>
+          </View>
+
+          <View style={viewStyles.Body}>
+            <Text>
+              Loading Store Data ...
+            </Text>
+          </View>
+
+          <View style={viewStyles.Footer} />
+          <NavigationButtons onPageSelect={this.setPage} />
+        </View>
+      );
+    }
 
     return (
       <View style={{ flex: 1 }}>
@@ -199,8 +224,8 @@ export default class ItemShop extends Component {
           }}
         >
           <DescriptionModal
-            name={selectedItemID ? selectedItem.name : null}
-            description={selectedItem ? selectedItem.description : null}
+            name={selectedItemID ? selectedItem.Name : null}
+            description={selectedItem ? selectedItem.Description : null}
             setModalVisible={this.setModalVisibility}
           />
         </Modal>
@@ -213,7 +238,7 @@ export default class ItemShop extends Component {
           }}
         >
           <PurchaseModal
-            name={selectedItemID ? selectedItem.name : null}
+            name={selectedItemID ? selectedItem.Name : null}
             description={null}
             itemID={selectedItemID}
             closeModal={() => {
@@ -229,3 +254,17 @@ export default class ItemShop extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  const {items} = state;
+  return {
+    items
+  };
+}
+
+const mapDispatchToProps = {
+  loadItems,
+  unloadItems
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ItemShop);

@@ -23,3 +23,22 @@ export const userMoney = (money)=>({
         money
     }
 });
+
+/**
+ * Stores an array of item data
+ * 
+ * @param {Array} data 
+ */
+export const loadItems = (data) =>({
+    type: Actions.ITEMS_LOAD,
+    payload: {
+        data
+    }
+})
+
+/**
+ * Unloads the items from the database
+ */
+export const unloadItems = () =>({
+    type: Actions.ITEMS_UNLOAD
+})
