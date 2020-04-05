@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, Text, TextInput, Dimensions, TouchableOpacity } from 'react-native';
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
 
+
+import { connect } from 'react-redux';
+import { loginUser , userMoney } from '../../redux/actions'; 
 
 var valid;
 const data = [
@@ -12,16 +15,16 @@ const data = [
 const numColumns = 1;
 
 
-export default class Login extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
       Username: '',
       Password: '',
+      Money: ''
     }
   }
   _onPressButton = () => {
-
     fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/user.php', {
       method: 'POST',
       headers: {
@@ -33,17 +36,15 @@ export default class Login extends Component {
         password: this.state.Password,
       })
     })
-
       .then((response) => response.json())
-      
       .then((response) => {
         if (response.status === "true") {
-          console.log("Data sent");
-          this.props.parentCallback(true);
+          this.props.loginUser(this.state.Username); //username saver this.props.user.username
+          this.props.userMoney(response.money); //money saved this.props.user.money
+          this.props.unMount();
         } else {
           alert("Invalid login info. Try again.");
         }
-
       })
       .done();
   }
@@ -96,6 +97,7 @@ export default class Login extends Component {
     }
   }
   render() {
+    console.log(this.props.user);
     return (
       <LinearGradient
         colors={["#283c86", "#45a247"]}
@@ -175,3 +177,17 @@ const styles = StyleSheet.create({
     flex: 1
   },
 });
+
+const mapStateToProps = (state) => {
+  const { user} = state;
+  return {
+    user,
+  }
+}
+
+const mapDispatchToProps = {
+  loginUser,
+  userMoney
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

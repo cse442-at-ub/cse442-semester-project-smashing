@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, Text, Dimensions, Button, Alert, TouchableWithoutFeedback } from 'react-native';
-import { LinearGradient } from "expo";
+import { LinearGradient } from "expo-linear-gradient";
 
 const data = [
   { key: 'statLabel', val: "Stat", type: 'label' },

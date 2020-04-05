@@ -1,84 +1,104 @@
 import React, { Component } from 'react';
-import { Text, View ,StyleSheet, Image, FlatList} from 'react-native';
-import { LinearGradient } from "expo";
+import { Text, View, StyleSheet, Image, FlatList } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient'
+
 import Coin from "./assets/coin.gif"
 
+import { connect } from "react-redux";
+import { userMoney } from '../../redux/actions';
 
 
 
 const DATA = [
-  {
-    key: 1,
-    name: 'Wallet',
-    value: 323454234,
-  },
-  {
-    key: 2,
-    name: 'Todays Earnings',
-    value: 469,
-  },
+  {key: 'Money',name: 'Wallet',value: '',},
+  {key: "Money", name: 'Todays',value: 1234,},
+  {key: "Money",name: 'Test', value: 1234,},
 ];
 
 
 
-export default class CalorieCounter extends Component {
+class CalorieCounter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+      Money: '',
+      Todays: 5,
+      Username: '',
     };
   }
+
+  componentDidMount = () => {
+    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/user.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        form: 'money',
+        username: this.props.user.username,
+      })
+    }).then((response) => response.json())
+      .then((res) => {
+          this.setState({Money: res.money})
+          this.props.userMoney(this.state.Money); //money saved this.props.user.money
+      })
+  }
+
+  renderItem = ({ item }) => {
+
+    if (item.name == "Wallet") {
+      return (
+        <React.Fragment>
+          <View style={css.separator}>
+            <Text style={css.name}>{item.name}</Text>
+          </View>
+          <View style={css.separator}>
+            <Text
+              style={css.name}
+              numColumns={2}
+            >{this.state.Money}</Text>
+          </View>
+        </React.Fragment>
+      )
+    }
+    else if (item.name == "Todays") {
+      return (
+        <React.Fragment>
+          <View style={css.separator}>
+            <Text style={css.name}>{item.name}</Text>
+          </View>
+          <View style={css.separator}>
+            <Text
+              style={css.name}
+              numColumns={2}
+            >{this.state.Todays}</Text>
+          </View>
+        </React.Fragment>
+      )
+    }
+
+  }
   render() {
+    console.log(this.props.user);
     return (
-      <LinearGradient 
-        colors={["#DBDBDB", "#EAEAEA"]}
-        style={css.linearGradient}
-      >
-      <View style = {css.header}>
-      <LinearGradient
-        colors={["#DC2424", "#4A569D"]}
-        style={css.linearGradient2}
-      >
-       <Text style = {css.topfont}>Currency Counter</Text>
-       </LinearGradient>
-      </View>
-
-      <LinearGradient
-        colors={["#DBDBDB", "#EAEAEA"]}
-        style={css.linearGradient}
-      >
-      <FlatList
-      contentContainerStyle={{flexDirection : "column"}}
-      numColumns={2}
-      data={DATA}
-      renderItem={({item}) => (
-      <View style={css.separator}>
-        <Text style={css.name}>{item.name}</Text>
-      </View>
-      )}
-      />
-      </LinearGradient>
-
-      <FlatList
-      contentContainerStyle={{flexDirection : "column"}}
-      numColumns={2}
-      data={DATA}
-      renderItem={({item}) => (
-      <View style={css.separator}>
-        <Text style={css.value}>{item.value}</Text>
-      </View>)}/>
-
-      <Image
-        style ={css.coin} source={Coin}
-      />
-    
-
-    
-
-
-
-      
-      </LinearGradient>
+      <React.Fragment>
+        <LinearGradient
+          colors={["#283c86", "#45a247"]}
+          style={css.linearGradient}
+        >
+          <View style={css.header}>
+            <Text style={css.topfont}>Currency Counter</Text>
+            {/* <Text style={css.topfont}>{this.props.user.username}</Text> */}
+          </View>
+          <FlatList
+            data={DATA}
+            contentContainerStyle={{ flexDirection: "column" }}
+            renderItem={this.renderItem}
+            numColumns={2}
+          />
+          <Image style={css.coin} source={Coin} />
+        </LinearGradient>
+      </React.Fragment>
     );
   }
 }
@@ -90,21 +110,21 @@ const css = StyleSheet.create({
     flex: 1,
     fontSize: 23.5,
     textAlign: "center",
-    color: 'blue', 
-   },
-   value: {
+    color: 'white',
+  },
+  value: {
     flex: 1,
     fontSize: 22,
     textAlign: "center",
     color: 'blue',
-   },
-   separator: {
-    flex: 2, 
-    borderWidth: 3, 
+  },
+  separator: {
+    flex: 2,
+    borderWidth: 3,
     borderColor: 'black',
-    textAlign: "center", 
+    textAlign: "center",
     marginBottom: "40%",
-   },
+  },
   linearGradient: {
     height: 3,
     flex: 1,
@@ -117,22 +137,33 @@ const css = StyleSheet.create({
     flexBasis: 60,
     borderWidth: 3,
     borderColor: 'black',
-    height: 18,
+    height: 26,
     margin: 45,
     borderRadius: 26,
   },
   topfont: {
-      justifyContent: "center",
-      alignItems: "center",
-      fontSize: 34,
-      color: 'white',
+    justifyContent: "center",
+    alignItems: "center",
+    fontSize: 34,
+    color: 'white',
   },
   coin: {
     justifyContent: "center",
     alignItems: "center",
     marginLeft: "25%"
-  },  
- 
-
-
+  },
 });
+
+const mapStateToProps = (state) => {
+  const { user } = state;
+  return {
+    user,
+  };
+}
+
+
+const mapDispatchToProps = {
+  userMoney,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CalorieCounter);
