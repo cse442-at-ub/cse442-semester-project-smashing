@@ -1,82 +1,317 @@
 import React, { Component, useState } from 'react';
-import { Button, ScrollView, Text, View, StyleSheet, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Button, ScrollView, Text, View, StyleSheet, Alert, TextInput, Keyboard, TouchableWithoutFeedback, FlatList, TouchableOpacity } from 'react-native';
 import { EvilIcons, Entypo } from '@expo/vector-icons';
 import FriendItem from './friendItem';
+import { LinearGradient } from "expo-linear-gradient";
 
 
-export default class FriendsList extends Component {
+import { connect } from "react-redux";
+import { loginUser } from '../../redux/actions';
+
+var friend = {name: '', friend_status: 0, action_user: ''};
+
+class FriendsList extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      Username: '',
+      friendslist: [],
+      friendcount: 0,
+      Search: '',
+      searchlist: [],
+      searchcount: 0,
+      searchdisplay: false,
+    };
+    this.renderList = this.renderList.bind(this);
+    this.fetchFriends = this.fetchFriends.bind(this);
+    this.acceptPessHandler = this.acceptPessHandler.bind(this);
+  }
+
+  componentDidMount = () => {
+    this.fetchFriends();
+  }
+
+  fetchFriends = () =>{
+    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/friend.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        form: 'friends',
+        user: this.props.user.username,
+      })
+    }).then((response) => response.json())
+      .then((res) => {
+          //console.log( res.friends);
+          let i = 0;
+          var count = 0;
+          var newFriendlist = [];
+          for (i in res.friends){
+            count = count + 1;
+            //console.log("in loop");
+            let j = 0;
+            for (j in res.friends[i].friendstats){
+              //console.log("inner loop");
+              //console.log(j + ' ' + res.friends[i].friendstats[j]);
+              if (j == "username"){
+                friend_name = res.friends[i].friendstats[j];
+                console.log(j + ' ' + res.friends[i].friendstats[j]);
+              }
+            }
+            friend = {name: friend_name, friend_status: res.friends[i].STATUS, action_user: res.friends[i].ACTION_USER}; 
+            newFriendlist.push(friend);
+          }
+          this.setState({friendslist: newFriendlist});
+          this.setState({friendcount: count});
+      })
+  }
+  
+
+  renderList = () => {
+    if (!this.state.searchdisplay){
+      return (
+        <FlatList
+        keyExtractor={(item) => item.name}
+        data = {this.state.friendslist}
+        renderItem={({ item }) => (
+          <FriendItem item={item} friendsPessHandler={this.friendsPessHandler} acceptPessHandler={this.acceptPessHandler} removeFriend={this.removeFriend} addFrendPressHandler={this.addFrendPressHandler} pendingPessHandler={this.pendingPessHandler}/>
+        )}
+        />
+      );
+    }else{
+      if(this.state.renderList === undefined || this.state.renderList.length == 0){
+        return (<Text>No users found for that search</Text>);
+      }
+      return (
+        <FlatList
+        keyExtractor={(item) => item.name}
+        data = {this.state.renderList}
+        renderItem={({ item }) => (
+          <FriendItem item={item} friendsPessHandler={this.friendsPessHandler} acceptPessHandler={this.acceptPessHandler} removeFriend={this.removeFriend} addFrendPressHandler={this.addFrendPressHandler} pendingPessHandler={this.pendingPessHandler}/>
+        )}
+        />
+      );
+    }
+  }
+
+  friendsPessHandler = (name) => {
+    Alert.alert(
+      'Remove friend?',
+      'Are you sure you want to remove ' + name + ' as a friend?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('cancel pressed')
+        },
+        {
+          text: 'Confirm',
+          onPress: () => {this.removeFriend(name)}
+        }
+      ]
+    )
+  }
+
+  pendingPessHandler = (name) => {
+    Alert.alert(
+      'Revoke friend request?',
+      'Are you sure you want to revoke friend request to ' + name + '?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('cancel pressed')
+        },
+        {
+          text: 'Confirm',
+          onPress: () => {this.removeFriend(name)}
+        }
+      ]
+    )
+  }
+
+  addFrendPressHandler = (name) => {
+    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/friend.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        form: 'add friend',
+        requester: this.props.user.username,
+        requestie: name,
+        friendstatus: 0,
+      })
+    }).then((response) => response.json())
+      .then((res) => {
+         
+      })
+    this.setState({searchdisplay: false});
+    this.fetchFriends();
+  }
+
+  removeFriend = (name) => {
+    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/friend.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        form: 'remove',
+        deleter: this.props.user.username,
+        deletie: name,
+      })
+    }).then((response) => response.json())
+      .then((res) => {
+         
+      })
+    this.fetchFriends();
+  }
+
+  acceptPessHandler = (name, status) => {
+    console.log('accepted friend request');
+    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/friend.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        form: 'add friend',
+        requester: this.props.user.username,
+        requestie: name,
+        friendstatus: status,
+      })
+    }).then((response) => response.json())
+      .then((res) => {
+         
+      })
+    this.fetchFriends();
+  }
+
+  onSearch = () => {
+    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/friend.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        form: 'search friend',
+        user: this.props.user.username,
+        search: this.state.Search,
+      })
+    }).then((response) => response.json())
+      .then((res) => {
+          let i = 0;
+          var newSearchlist = [];
+          for (i in res.results){      
+            user = {name: res.results[i].username, friend_status: res.results[i].friendstatus, action_user: res.results[i].action_user}; 
+            newSearchlist.push(user);
+          }
+          this.setState({renderList: newSearchlist});
+          this.setState({searchcount: res.resultscount});
+          this.setState({searchdisplay: true});
+          console.log(this.state.searchcount);
+      })
+  }
+
   render() {
-
-    // const [friends, setFriend] = useState([
-    //   { text : 'Friend 1', key: '1' },
-    //   { text : 'Friend 2', key: '2' },
-    //   { text : 'Friend 3', key: '3'},
-    //   { text : 'Friend 4', key: '4' },
-    //   { text : 'Friend 5', key: '5' },
-    //   { text : 'Friend 6', key: '6'},
-    //   { text : 'Friend 7', key: '7' },
-    //   { text : 'Friend 8', key: '8' },
-    //   { text : 'Friend 9', key: '9'},
-    //   { text : 'Friend 10', key: '10' },
-    //   { text : 'Friend 11', key: '11' },
-    //   { text : 'Friend 12', key: '12' },
-    //   { text : 'Friend 13', key: '13' },
-    //   { text : 'Friend 14', key: '14' },
-    //   { text : 'Friend 15', key: '15' }
-    // ]);
-
     return (
-      <TouchableWithoutFeedback onPress={() =>{
-        Keyboard.dismiss();
-      }}>
+      // <TouchableWithoutFeedback onPress={() =>{
+      //   Keyboard.dismiss();
+      // }}>
         <View style={styles.container}>
 
             <View style={styles.tabView}>
-              <Text style={styles.userName}>User Name</Text>
+              <Text style={styles.userName}>{this.props.user.username}</Text>
               <EvilIcons name='user' size={50} color='black' />
             </View>
 
             <View style={styles.friendNav}>
-              <View style={styles.friendSelected}>
-                <Text style={styles.friendNum}>15 Friends</Text>
-              </View>
-              <View style={styles.notSelected}>
-                <Text style={styles.suggested}>Suggested</Text>
-              </View>
+              <TouchableWithoutFeedback onPress={() => {this.setState({searchdisplay: false}); this.fetchFriends()}}>
+                <View style={[
+                  this.state.searchdisplay ? {
+                    height: '100%',
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'space-evenly',
+                  } : {
+                    borderBottomWidth: 1,
+                    borderBottomColor: 'black',
+                    height: '100%',
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'space-evenly',
+                  }
+                ]}>
+                  <Text style={[
+                  this.state.searchdisplay ? {
+                    color: '#D5D5C8',
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                  } : {
+                    fontSize: 18,
+                    fontWeight: 'bold',
+                  }
+                ]}>{this.state.friendcount} Friends</Text>
+                </View>
+                </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPress={() => {this.setState({searchdisplay: true});}}>
+                <View style={[
+                    this.state.searchdisplay ?  {
+                      borderBottomWidth: 1,
+                      borderBottomColor: 'black',
+                      height: '100%',
+                      flex: 1,
+                      alignItems: 'center',
+                      justifyContent: 'space-evenly',
+                    } : {
+                      height: '100%',
+                      flex: 1,
+                      alignItems: 'center',
+                      justifyContent: 'space-evenly',
+                    }
+                  ]}>
+                  <Text style={[
+                    this.state.searchdisplay ?  {
+                      fontSize: 18,
+                      fontWeight: 'bold',
+                    } : {
+                      color: '#D5D5C8',
+                      fontSize: 18,
+                      fontWeight: 'bold',
+                    }
+                  ]}>Searched</Text>
+                </View>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPress={() => {Alert.alert('Challenges coming soon')}}>
+                <View style={styles.notSelected}>
+                  <Text style={styles.suggested}>Challenges</Text>
+                </View>
+              </TouchableWithoutFeedback>
             </View>
 
             <View style={styles.searchBarView}>
               <TextInput 
               style={styles.searchBar}
               placeholder='Search Friends' 
+              hitSlop={{ top: 10, left: 2000, bottom: 10, right: 2000 }}
+              maxLength={40}
+              onChangeText={(Search) => { this.setState({ Search: Search }) }}
               />
-              <EvilIcons name='search' size={45} color='black' />
+              <EvilIcons name='search' size={45} color='black' onPress={() => { this.onSearch() }}/>
             </View>
 
-            <ScrollView>
-              <FriendItem item={'Friend 1'}/>
-              <FriendItem item={'Friend 2'}/>
-              <FriendItem item={'Friend 3'}/>
-              <FriendItem item={'Friend 4'}/>
-              <FriendItem item={'Friend 5'}/>
-              <FriendItem item={'Friend 6'}/>
-              <FriendItem item={'Friend 7'}/>
-              <FriendItem item={'Friend 8'}/>
-              <FriendItem item={'Friend 9'}/>
-              <FriendItem item={'Friend 10'}/>
-              <FriendItem item={'Friend 11'}/>
-              <FriendItem item={'Friend 12'}/>
-              <FriendItem item={'Friend 13'}/>
-            </ScrollView>
+        
+            {this.renderList()}
 
         </View>
-      </TouchableWithoutFeedback>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 20,
     flex: 1,
   },
   tabView: {
@@ -84,14 +319,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: '8%',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: '#F6F6E3'
   },
   userName: {
     color: 'black',
-    flex: 2,
     paddingLeft: 50,
     fontWeight: 'bold',
     fontSize: 18,
@@ -157,3 +391,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 });
+
+const mapStateToProps = (state) => {
+  const { user } = state;
+  return {
+    user,
+  };
+}
+
+
+//const mapDispatchToProps = {
+//  loginUser,
+//}
+
+export default connect(mapStateToProps, null)(FriendsList);
