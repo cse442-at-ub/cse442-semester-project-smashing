@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, Text, TextInput, Dimensions, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient'
+import { Input } from 'react-native-elements';
 
 
 import { connect } from 'react-redux';
@@ -25,6 +26,7 @@ class Login extends Component {
     }
   }
   _onPressButton = () => {
+    
     fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/user.php', {
       method: 'POST',
       headers: {
@@ -54,7 +56,7 @@ class Login extends Component {
       if (item.val === "Username") {
         return (
           <View style={styles.item}>
-            <TextInput
+            <Input
               hitSlop={{ top: 10, left: 2000, bottom: 10, right: 2000 }}
               style={{ color: "white" }}
               placeholder={item.val}
@@ -66,10 +68,10 @@ class Login extends Component {
       } else {
         return (
           <View style={styles.item}>
-            <TextInput
-              hitSlop={{ top: 10, left: 2000, bottom: 10, right: 2000 }}
+            <Input
+              //hitSlop={{ top: 10, left: 2000, bottom: 10, right: 2000 }}
               secureTextEntry={true}
-              style={{ color: "white" }}
+              //style={{ color: "white" }}
               placeholder={item.val}
               maxLength={25}
               onChangeText={(Password) => { this.setState({ Password: Password }) }}
