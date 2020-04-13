@@ -1,46 +1,127 @@
 import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, Text, Dimensions, Button, Alert, TouchableWithoutFeedback } from 'react-native';
 import { LinearGradient } from "expo-linear-gradient";
+import { connect } from 'react-redux'
+import { userMoney, userStatsRefresh } from '../../redux/actions';
 
-const data = [
-  { key: 'statLabel', val: "Stat", type: 'label' },
-  { key: 'levelLabel', val: "Level", type: 'label' },
-  { key: 'buttonLabel', val: "    ", type: 'label' },
-  { key: 'costLabel', val: "Cost", type: 'label' },
-
-  { key: 'HPlab', val: "HP", type: 'item' },
-  { key: 'HPval', val: 1, type: 'item' },
-  { key: 'HPbut', val: '+', type: 'button' },
-  { key: 'HPcost', val: 1, type: 'item' },
-
-  { key: 'STRlab', val: "STR", type: 'item' },
-  { key: 'STRval', val: 1, type: 'item' },
-  { key: 'STRbut', val: "+", type: 'button' },
-  { key: 'STRcost', val: 1, type: 'item' },
-
-  { key: 'AGIlab', val: "AGI", type: 'item' },
-  { key: 'AGIval', val: 1, type: 'item' },
-  { key: 'AGIbut', val: "+", type: 'button' },
-  { key: 'AGIcost', val: 1, type: 'item' },
-
-  { key: 'SPDlab', val: "SPD", type: 'item' },
-  { key: 'SPDval', val: 1, type: 'item' },
-  { key: 'SPDbut', val: "+", type: 'button' },
-  { key: 'SPDcost', val: 1, type: 'item' },
-
-  { key: 'DRNlab', val: "DRN", type: 'item' },
-  { key: 'DRNval', val: 1, type: 'item' },
-  { key: 'DRNbut', val: "+", type: 'button' },
-  { key: 'DRNcost', val: 1, type: 'item' },
-
-  { key: 'apply', val: "APPLY", type: 'button' },
-  { key: 'reset', val: "RESET", type: 'button' },
-
-
-];
 const numColumns = 4;
 
-export default class Stats extends Component {
+class Stats extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      modified: false, // If modified is true, it means one of the stats has been upgraded
+      originalStats: {}, 
+      currentStats: {} 
+    };
+
+    // Reset
+    //this.setState({currentStats: this.state.originalStats});
+   
+    // apply
+    //this.setState({originalStats: this.state.currentStats});
+
+    // Define "this" keyword for function
+    this.generateListData = this.generateListData.bind(this);
+  }
+
+  componentDidMount = () => {
+    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/user.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        form: 'stats',
+        username: this.props.user.username,
+      })
+    }).then((response) => response.json())
+      .then((res) => {
+          const { money, hp, agi, drn, spd, str} = res;
+          const stats = {Money: money, HP: hp, AGI: agi, DRN: drn, SPD: spd, STR: str}
+          this.setState({ originalStats: stats, currentStats: stats, modified: false });
+      })
+  }
+ 
+  generateListData(){
+    const {HP, STR, AGI, SPD, DRN} = this.state.currentStats;
+
+    return [
+      { key: 'statLabel', val: "Stat", type: 'label' },
+      { key: 'levelLabel', val: "Level", type: 'label' },
+      { key: 'buttonLabel', val: "    ", type: 'label' },
+      { key: 'costLabel', val: "Cost", type: 'label' },
+
+      { key: 'HPlab', val: "HP", type: 'item' },
+      { key: 'HPval', val: HP, type: 'item' },
+      { key: 'HPbut', val: '+', type: 'button' },
+      { key: 'HPcost', val: 1, type: 'item' },
+
+      { key: 'STRlab', val: "STR", type: 'item' },
+      { key: 'STRval', val: STR, type: 'item' },
+      { key: 'STRbut', val: "+", type: 'button' },
+      { key: 'STRcost', val: 1, type: 'item' },
+
+      { key: 'AGIlab', val: "AGI", type: 'item' },
+      { key: 'AGIval', val: AGI, type: 'item' },
+      { key: 'AGIbut', val: "+", type: 'button' },
+      { key: 'AGIcost', val: 1, type: 'item' },
+
+      { key: 'SPDlab', val: "SPD", type: 'item' },
+      { key: 'SPDval', val: SPD, type: 'item' },
+      { key: 'SPDbut', val: "+", type: 'button' },
+      { key: 'SPDcost', val: 1, type: 'item' },
+
+      { key: 'DRNlab', val: "DRN", type: 'item' },
+      { key: 'DRNval', val: DRN, type: 'item' },
+      { key: 'DRNbut', val: "+", type: 'button' },
+      { key: 'DRNcost', val: 1, type: 'item' },
+
+      { key: 'apply', val: "APPLY", type: 'applyButton' },
+      { key: 'reset', val: "RESET", type: 'resetButton' },
+
+    ];
+  }
+
+  applyStat() {
+    this.setState({originalStats: this.state.currentStats});
+    this.props.userStatsRefresh(this.state.currentStats)
+  }
+
+  resetStat() {
+    this.setState({currentStats: this.state.originalStats});
+  }
+
+  incrementStat(key){
+    const {HP, AGI, STR, SPD, DRN, Money} = this.state.currentStats;
+    switch (key)
+    {
+      case 'HPbut':
+        const HPnextCurrentStats = Object.assign({}, this.state.currentStats, {HP: HP+1, Money: Money-1});
+        this.setState({currentStats: HPnextCurrentStats});
+      break;
+      case 'AGIbut':
+        const AGInextCurrentStats = Object.assign({}, this.state.currentStats, {AGI: AGI+1, Money: Money-1});
+        this.setState({currentStats: AGInextCurrentStats});
+      break;
+      case 'STRbut':
+        const STRnextCurrentStats = Object.assign({}, this.state.currentStats, {STR: STR+1, Money: Money-1});
+        this.setState({currentStats: STRnextCurrentStats});
+      break;
+      case 'SPDbut':
+        const SPDnextCurrentStats = Object.assign({}, this.state.currentStats, {SPD: SPD+1, Money: Money-1});
+        this.setState({currentStats: SPDnextCurrentStats});
+      break;
+      case 'DRNbut':
+        const DRNnextCurrentStats = Object.assign({}, this.state.currentStats, {DRN: DRN+1, Money: Money-1});
+        this.setState({currentStats: DRNnextCurrentStats});
+      break;
+    }
+
+  }
+
   renderItem = ({ item }) => {
     if (item.type === "item") {
       return (
@@ -56,15 +137,33 @@ export default class Stats extends Component {
       )
     } else if (item.type === "button") {
       return (
-        <View style={styles.button}>
-          <TouchableWithoutFeedback onPress={() => Alert.alert('pressed')}>
-            <Text style={{color: "white"}}>{item.val}</Text>
-          </TouchableWithoutFeedback>
-        </View>
+        <TouchableWithoutFeedback onPress={() =>this.incrementStat(item.key)}> 
+          <View style={styles.button}>
+              <Text style={{color: "white"}}>{item.val}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      )
+    } else if (item.type === "applyButton") {
+      return (
+        <TouchableWithoutFeedback onPress={() => this.applyStat()}>
+          <View style={styles.button}>
+              <Text style={{color: "white"}}>{item.val}</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      )
+    } else if (item.type === "resetButton") {
+      return (
+        <TouchableWithoutFeedback onPress={() => this.resetStat()}>
+          <View style={styles.button}>
+              <Text style={{color: "white"}}>{item.val}</Text>
+          </View>
+        </TouchableWithoutFeedback>
       )
     }
   }
   render() {
+    const data = this.generateListData();
+
     return (
       <LinearGradient
         colors={["#283c86", "#45a247"]}
@@ -74,6 +173,9 @@ export default class Stats extends Component {
           <View style={styles.margin}>
             <Text style={styles.title}>
               STATS
+        </Text>
+        <Text style={styles.labelText}>
+            Currency: {this.state.currentStats.Money}
         </Text>
           </View>
             <FlatList
@@ -144,3 +246,18 @@ const styles = StyleSheet.create({
     flex: 1
   },
 });
+
+const mapStateToProps = (state) => {
+  const { user } = state;
+  return {
+    user,
+  };
+}
+
+
+const mapDispatchToProps = {
+  userMoney,
+  userStatsRefresh
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Stats);

@@ -11,6 +11,8 @@ export default function(state=initialState, action){
             return Object.assign({}, state, {...action.payload}); //changed this from initalState to state so now it doesnt just keep resetting
         case Actions.USER_MONEY:
             return Object.assign({}, state, {...action.payload});
+        case Actions.USER_STATS_REFRESH:
+            return Object.assign({}, state, {...action.payload});
         default:
             return state;
     }

@@ -7,7 +7,7 @@ const initialState = {
 export default function(state=initialState, action){
     switch(action.type){
         case Actions.ITEMS_LOAD:
-            return Object.assign({}, state, {...action.payload}); //changed this from initalState to state so now it doesnt just keep resetting
+            return Object.assign({}, state, {...action.payload}); 
         case Actions.ITEMS_UNLOAD:
             return Object.assign({}, state, {data: null});
         default:

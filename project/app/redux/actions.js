@@ -25,6 +25,18 @@ export const userMoney = (money)=>({
 });
 
 /**
+ * Stores the stats into redux database
+ * 
+ * @param {stats} the stats for the user
+ */
+export const userStatsRefresh = (stats)=>({
+    type: Actions.USER_STATS_REFRESH,
+    payload: {
+        ... stats
+    }
+})
+
+/**
  * Stores an array of item data
  * 
  * @param {Array} data 
