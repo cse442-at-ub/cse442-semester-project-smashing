@@ -3,7 +3,8 @@ import { StatusBar, View, StyleSheet, ScrollView, Image  } from "react-native";
 import { GameEngine } from "react-native-game-engine";
 import Heading from "./heading";
 import Item from "./item";
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
+
 import Logo from "./images/head.gif"
 
 

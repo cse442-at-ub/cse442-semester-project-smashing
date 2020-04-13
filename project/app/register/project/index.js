@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, Text, TextInput, Dimensions, Alert, TouchableOpacity } from 'react-native';
-import { LinearGradient } from "expo";
+import { LinearGradient } from 'expo-linear-gradient'
+
 import Login from '../../loginpage/project';
 
 
@@ -48,7 +49,7 @@ export default class Register extends Component {
         .then((res) => {
           if (res.message === 'Account Successfully Created') {
             alert(res.message),
-            this.props.parentCallback(true);
+            this.props.parentCallback();
           } else {
             alert(res.message)
           }
