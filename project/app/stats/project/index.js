@@ -57,27 +57,27 @@ class Stats extends Component {
       { key: 'HPlab', val: "HP", type: 'item' },
       { key: 'HPval', val: HP, type: 'item' },
       { key: 'HPbut', val: '+', type: 'button' },
-      { key: 'HPcost', val: 1, type: 'item' },
+      { key: 'HPcost', val: 10*this.state.currentStats["HP"], type: 'item' },
 
       { key: 'STRlab', val: "STR", type: 'item' },
       { key: 'STRval', val: STR, type: 'item' },
       { key: 'STRbut', val: "+", type: 'button' },
-      { key: 'STRcost', val: 1, type: 'item' },
+      { key: 'STRcost', val: 10*this.state.currentStats["STR"], type: 'item' },
 
       { key: 'AGIlab', val: "AGI", type: 'item' },
       { key: 'AGIval', val: AGI, type: 'item' },
       { key: 'AGIbut', val: "+", type: 'button' },
-      { key: 'AGIcost', val: 1, type: 'item' },
+      { key: 'AGIcost', val: 10*this.state.currentStats["AGI"], type: 'item' },
 
       { key: 'SPDlab', val: "SPD", type: 'item' },
       { key: 'SPDval', val: SPD, type: 'item' },
       { key: 'SPDbut', val: "+", type: 'button' },
-      { key: 'SPDcost', val: 1, type: 'item' },
+      { key: 'SPDcost', val: 10*this.state.currentStats["SPD"], type: 'item' },
 
       { key: 'DRNlab', val: "DRN", type: 'item' },
       { key: 'DRNval', val: DRN, type: 'item' },
       { key: 'DRNbut', val: "+", type: 'button' },
-      { key: 'DRNcost', val: 1, type: 'item' },
+      { key: 'DRNcost', val: 10*this.state.currentStats["DRN"], type: 'item' },
 
       { key: 'apply', val: "APPLY", type: 'applyButton' },
       { key: 'reset', val: "RESET", type: 'resetButton' },
@@ -86,6 +86,32 @@ class Stats extends Component {
   }
 
   applyStat() {
+    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/user.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        form: 'update stats',
+        Money: this.state.currentStats["Money"],
+        HP: this.state.currentStats["HP"],
+        STR: this.state.currentStats["STR"],
+        AGI: this.state.currentStats["AGI"],
+        SPD: this.state.currentStats["SPD"],
+        DRN: this.state.currentStats["DRN"],
+        User: this.props.user.username,
+
+        message: '',
+      })
+    }).then((response) => response.json())
+      .then((res) => {
+        if (res.message === 'Stats Successfully Updated') {
+          alert(res.message),
+          this.props.parentCallback();
+        } else {
+          alert(res.message)
+        }
+      })
     this.setState({originalStats: this.state.currentStats});
     this.props.userStatsRefresh(this.state.currentStats)
   }
@@ -99,24 +125,34 @@ class Stats extends Component {
     switch (key)
     {
       case 'HPbut':
-        const HPnextCurrentStats = Object.assign({}, this.state.currentStats, {HP: HP+1, Money: Money-1});
-        this.setState({currentStats: HPnextCurrentStats});
+        if(this.state.currentStats["HP"]*10 <= this.state.currentStats["Money"]){
+          const HPnextCurrentStats = Object.assign({}, this.state.currentStats, {HP: HP+1, Money: Money-(HP*10)});
+          this.setState({currentStats: HPnextCurrentStats});
+        }
       break;
       case 'AGIbut':
-        const AGInextCurrentStats = Object.assign({}, this.state.currentStats, {AGI: AGI+1, Money: Money-1});
-        this.setState({currentStats: AGInextCurrentStats});
+        if(this.state.currentStats["AGI"]*10 <= this.state.currentStats["Money"]){
+          const AGInextCurrentStats = Object.assign({}, this.state.currentStats, {AGI: AGI+1, Money: Money-(AGI*10)});
+          this.setState({currentStats: AGInextCurrentStats});
+        }
       break;
       case 'STRbut':
-        const STRnextCurrentStats = Object.assign({}, this.state.currentStats, {STR: STR+1, Money: Money-1});
-        this.setState({currentStats: STRnextCurrentStats});
+        if(this.state.currentStats["STR"]*10 <= this.state.currentStats["Money"]){
+          const STRnextCurrentStats = Object.assign({}, this.state.currentStats, {STR: STR+1, Money: Money-(STR*10)});
+          this.setState({currentStats: STRnextCurrentStats});
+        }
       break;
       case 'SPDbut':
-        const SPDnextCurrentStats = Object.assign({}, this.state.currentStats, {SPD: SPD+1, Money: Money-1});
-        this.setState({currentStats: SPDnextCurrentStats});
+        if(this.state.currentStats["SPD"]*10 <= this.state.currentStats["Money"]){
+          const SPDnextCurrentStats = Object.assign({}, this.state.currentStats, {SPD: SPD+1, Money: Money-(SPD*10)});
+          this.setState({currentStats: SPDnextCurrentStats});
+        }
       break;
       case 'DRNbut':
-        const DRNnextCurrentStats = Object.assign({}, this.state.currentStats, {DRN: DRN+1, Money: Money-1});
-        this.setState({currentStats: DRNnextCurrentStats});
+        if(this.state.currentStats["DRN"]*10 <= this.state.currentStats["Money"]){
+          const DRNnextCurrentStats = Object.assign({}, this.state.currentStats, {DRN: DRN+1, Money: Money-(DRN*10)});
+          this.setState({currentStats: DRNnextCurrentStats});
+        }
       break;
     }
 
