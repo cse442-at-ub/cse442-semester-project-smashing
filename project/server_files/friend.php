@@ -67,6 +67,7 @@
                 "STATUS" => $row['STATUS'],
                 "ACTION_USER" => $row['ACTION_USER'],
                 "FRIENDS_SINCE" => $row['FRIENDS_SINCE'],
+                "CHALLENGE" => $row['CHALLENGE'],
                 "friendstats" => $friend_stats
             );
             array_push($results, $row);
@@ -82,10 +83,10 @@
         if ($decoded['friendstatus'] == 2){
 
         }else if ($decoded['friendstatus'] == 0){
-            $stmt = $conn->prepare("INSERT INTO FRIENDSHIP (ID, USER_ONE, USER_TWO, STATUS, ACTION_USER) VALUE (?, ?, ?, ?, ?)");
+            $stmt = $conn->prepare("INSERT INTO FRIENDSHIP (USER_ONE, USER_TWO, STATUS, ACTION_USER) VALUE (?, ?, ?, ?)");
             $id = $decoded['requester'] .$decoded['requestie'];
             $stat = 1;
-            if (!$stmt->bind_param("sssis", $id, $decoded['requester'], $decoded['requestie'], $stat, $decoded['requester'])){
+            if (!$stmt->bind_param("ssis", $decoded['requester'], $decoded['requestie'], $stat, $decoded['requester'])){
                 echo "Binding parameters failed: (" . $stmt->errno . ") " . $stmt->error;
             }
             $result = $stmt->execute();

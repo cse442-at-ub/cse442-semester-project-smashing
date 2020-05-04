@@ -8,7 +8,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { connect } from "react-redux";
 import { loginUser } from '../../redux/actions';
 
-var friend = {name: '', friend_status: 0, action_user: ''};
+var friend = {name: '', friend_status: 0, action_user: '', challenge: null};
+var challenger = {name: '', chal_status: 0, action_user: '', winner: null};
 
 class FriendsList extends Component {
 
@@ -18,14 +19,20 @@ class FriendsList extends Component {
       Username: '',
       friendslist: [],
       friendcount: 0,
+      frienddisplay: true,
       Search: '',
       searchlist: [],
       searchcount: 0,
       searchdisplay: false,
+      challengelist: [],
+      challengedisplay: false,
+      challenge_count: 0
     };
     this.renderList = this.renderList.bind(this);
     this.fetchFriends = this.fetchFriends.bind(this);
     this.acceptPessHandler = this.acceptPessHandler.bind(this);
+    this.challengePressHandler = this.challengePressHandler.bind(this);
+    this.fetchChallenges = this.fetchChallenges.bind(this);
   }
 
   componentDidMount = () => {
@@ -47,6 +54,7 @@ class FriendsList extends Component {
           //console.log( res.friends);
           let i = 0;
           var count = 0;
+          var chal_count = 0;
           var newFriendlist = [];
           for (i in res.friends){
             count = count + 1;
@@ -60,27 +68,34 @@ class FriendsList extends Component {
                 console.log(j + ' ' + res.friends[i].friendstats[j]);
               }
             }
-            friend = {name: friend_name, friend_status: res.friends[i].STATUS, action_user: res.friends[i].ACTION_USER}; 
+            friend = {name: friend_name, friend_status: res.friends[i].STATUS, action_user: res.friends[i].ACTION_USER, challenge: res.friends[i].CHALLENGE}; 
             newFriendlist.push(friend);
+            if (res.friends[i].CHALLENGE != 0){
+              chal_count++;
+            }
           }
           this.setState({friendslist: newFriendlist});
           this.setState({friendcount: count});
+          this.setState({challenge_count: chal_count});
+          this.setState({frienddisplay: true});
+          this.setState({searchdisplay: false});
+          this.setState({challengedisplay: false});
       })
   }
   
 
   renderList = () => {
-    if (!this.state.searchdisplay){
+    if (this.state.frienddisplay){
       return (
         <FlatList
         keyExtractor={(item) => item.name}
         data = {this.state.friendslist}
         renderItem={({ item }) => (
-          <FriendItem item={item} friendsPessHandler={this.friendsPessHandler} acceptPessHandler={this.acceptPessHandler} removeFriend={this.removeFriend} addFrendPressHandler={this.addFrendPressHandler} pendingPessHandler={this.pendingPessHandler}/>
+          <FriendItem item={item} friendsPessHandler={this.friendsPessHandler} acceptPessHandler={this.acceptPessHandler} removeFriend={this.removeFriend} addFrendPressHandler={this.addFrendPressHandler} pendingPessHandler={this.pendingPessHandler} challengePressHandler={this.challengePressHandler}/>
         )}
         />
       );
-    }else{
+    }else if (this.state.searchdisplay){
       if(this.state.renderList === undefined || this.state.renderList.length == 0){
         return (<Text>No users found for that search</Text>);
       }
@@ -89,12 +104,134 @@ class FriendsList extends Component {
         keyExtractor={(item) => item.name}
         data = {this.state.renderList}
         renderItem={({ item }) => (
-          <FriendItem item={item} friendsPessHandler={this.friendsPessHandler} acceptPessHandler={this.acceptPessHandler} removeFriend={this.removeFriend} addFrendPressHandler={this.addFrendPressHandler} pendingPessHandler={this.pendingPessHandler}/>
+          <FriendItem item={item} friendsPessHandler={this.friendsPessHandler} acceptPessHandler={this.acceptPessHandler} removeFriend={this.removeFriend} addFrendPressHandler={this.addFrendPressHandler} pendingPessHandler={this.pendingPessHandler} challengePressHandler={this.challengePressHandler}/>
+        )}
+        />
+      );
+    }else {
+      return (
+        <FlatList
+        keyExtractor={(item) => item.name}
+        data = {this.state.challengelist}
+        renderItem={({ item }) => (
+          <FriendItem item={item} friendsPessHandler={this.friendsPessHandler} acceptPessHandler={this.acceptPessHandler} removeFriend={this.removeFriend} addFrendPressHandler={this.addFrendPressHandler} pendingPessHandler={this.pendingPessHandler} challengePressHandler={this.challengePressHandler} acceptChalPressHandler={this.acceptChalPressHandler} removeChalHandler={this.removeChalHandler}/>
         )}
         />
       );
     }
   }
+
+  challengePressHandler = (name) => {
+    Alert.alert(
+      'Challenge friend?',
+      'Challenge ' + name + ' to a burn off? First to 1000 caloires wins!',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('cancel pressed')
+        },
+        {
+          text: 'Confirm',
+          onPress: () => {this.challengeFriend(name)}
+        }
+      ]
+    )
+  }
+
+  challengeFriend = (name) => {
+    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/challenge.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        form: 'challenge',
+        requester: this.props.user.username,
+        requestie: name,
+        challengestat: 0,
+      })
+    }).then((response) => response.json())
+      .then((res) => {
+         
+      })
+    this.setState({searchdisplay: false});
+    this.fetchFriends();
+  }
+
+  fetchChallenges = () => {
+    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/challenge.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        form: 'challenges',
+        user: this.props.user.username
+      })
+    }).then((response) => response.json())
+      .then((res) => {
+          let i = 0;
+          var newSearchlist = [];
+          for (i in res.challengers){   
+            if (this.state.userName != res.challengers[i].USER_ONE){
+              challenger = {name: res.challengers[i].USER_TWO, chal_status: res.challengers[i].STATUS, action_user: res.challengers[i].ACTION_USER, winner: res.challengers[i].WINNER}; 
+              newSearchlist.push(challenger);
+            }else {
+              challenger = {name: res.challengers[i].USER_ONE, chal_status: res.challengers[i].STATUS, action_user: res.challengers[i].ACTION_USER, winner: res.challengers[i].WINNER}; 
+              newSearchlist.push(challenger);
+            }
+          }
+          this.setState({challenge_count: res.challenge_count});
+          this.setState({challengelist: newSearchlist});
+          this.setState({challengedisplay: true});
+          this.setState({searchdisplay: false});
+          this.setState({frienddisplay: false});
+      })
+  }
+
+  acceptChalPressHandler = (name) => {
+    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/challenge.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        form: 'challenge',
+        requester: this.props.user.username,
+        requestie: name,
+        challengestat: 1,
+      })
+    }).then((response) => response.json())
+      .then((res) => {
+         console.log("here");
+      })
+    this.setState({searchdisplay: false});
+    this.setState({challengedisplay: true});
+    this.setState({frienddisplay: false});
+    this.fetchChallenges();
+  }
+
+  removeChalHandler = (name) => {
+    fetch('http://www-student.cse.buffalo.edu/CSE442-542/2020-spring/cse-442ad/user/challenge.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        form: 'remove',
+        deleter: this.props.user.username,
+        deletie: name,
+      })
+    }).then((response) => response.json())
+      .then((res) => {
+         
+      })
+    this.setState({searchdisplay: false});
+    this.setState({challengedisplay: true});
+    this.setState({frienddisplay: false});
+    this.fetchChallenges();
+  }
+  
 
   friendsPessHandler = (name) => {
     Alert.alert(
@@ -144,9 +281,11 @@ class FriendsList extends Component {
       })
     }).then((response) => response.json())
       .then((res) => {
-         
+         console.log("here");
       })
     this.setState({searchdisplay: false});
+    this.setState({challengedisplay: false});
+    this.setState({frienddisplay: true});
     this.fetchFriends();
   }
 
@@ -165,6 +304,9 @@ class FriendsList extends Component {
       .then((res) => {
          
       })
+    this.setState({searchdisplay: false});
+    this.setState({challengedisplay: false});
+    this.setState({frienddisplay: true});
     this.fetchFriends();
   }
 
@@ -210,6 +352,7 @@ class FriendsList extends Component {
           this.setState({renderList: newSearchlist});
           this.setState({searchcount: res.resultscount});
           this.setState({searchdisplay: true});
+          this.setState({challengedisplay: false});
           console.log(this.state.searchcount);
       })
   }
@@ -227,35 +370,35 @@ class FriendsList extends Component {
             </View>
 
             <View style={styles.friendNav}>
-              <TouchableWithoutFeedback onPress={() => {this.setState({searchdisplay: false}); this.fetchFriends()}}>
+              <TouchableWithoutFeedback onPress={() => {this.setState({searchdisplay: false}); this.setState({challengedisplay: false}); this.setState({frienddisplay: true}); this.fetchFriends()}}>
                 <View style={[
-                  this.state.searchdisplay ? {
-                    height: '100%',
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'space-evenly',
-                  } : {
-                    borderBottomWidth: 1,
-                    borderBottomColor: 'black',
-                    height: '100%',
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'space-evenly',
-                  }
-                ]}>
+                    this.state.frienddisplay ?  {
+                      borderBottomWidth: 1,
+                      borderBottomColor: 'black',
+                      height: '100%',
+                      flex: 1,
+                      alignItems: 'center',
+                      justifyContent: 'space-evenly',
+                    } : {
+                      height: '100%',
+                      flex: 1,
+                      alignItems: 'center',
+                      justifyContent: 'space-evenly',
+                    }
+                  ]}>
                   <Text style={[
-                  this.state.searchdisplay ? {
-                    color: '#D5D5C8',
-                    fontSize: 18,
-                    fontWeight: 'bold',
-                  } : {
-                    fontSize: 18,
-                    fontWeight: 'bold',
-                  }
-                ]}>{this.state.friendcount} Friends</Text>
+                    this.state.frienddisplay ?  {
+                      fontSize: 18,
+                      fontWeight: 'bold',
+                    } : {
+                      color: '#D5D5C8',
+                      fontSize: 18,
+                      fontWeight: 'bold',
+                    }
+                  ]}>{this.state.friendcount} Friends</Text>
                 </View>
                 </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={() => {this.setState({searchdisplay: true});}}>
+              <TouchableWithoutFeedback onPress={() => {this.setState({searchdisplay: true}); this.setState({challengedisplay: false}); this.setState({frienddisplay: false});}}>
                 <View style={[
                     this.state.searchdisplay ?  {
                       borderBottomWidth: 1,
@@ -283,9 +426,32 @@ class FriendsList extends Component {
                   ]}>Searched</Text>
                 </View>
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={() => {Alert.alert('Challenges coming soon')}}>
-                <View style={styles.notSelected}>
-                  <Text style={styles.suggested}>Challenges</Text>
+              <TouchableWithoutFeedback onPress={() => {this.setState({searchdisplay: false}); this.setState({challengedisplay: true}); this.setState({frienddisplay: false}); this.fetchChallenges()}}>
+              <View style={[
+                    this.state.challengedisplay ?  {
+                      borderBottomWidth: 1,
+                      borderBottomColor: 'black',
+                      height: '100%',
+                      flex: 1,
+                      alignItems: 'center',
+                      justifyContent: 'space-evenly',
+                    } : {
+                      height: '100%',
+                      flex: 1,
+                      alignItems: 'center',
+                      justifyContent: 'space-evenly',
+                    }
+                  ]}>
+                  <Text style={[
+                    this.state.challengedisplay ?  {
+                      fontSize: 18,
+                      fontWeight: 'bold',
+                    } : {
+                      color: '#D5D5C8',
+                      fontSize: 18,
+                      fontWeight: 'bold',
+                    }
+                  ]}>{this.state.challenge_count} Challenges</Text>
                 </View>
               </TouchableWithoutFeedback>
             </View>
@@ -298,7 +464,7 @@ class FriendsList extends Component {
               maxLength={40}
               onChangeText={(Search) => { this.setState({ Search: Search }) }}
               />
-              <EvilIcons name='search' size={45} color='black' onPress={() => { this.onSearch() }}/>
+              <EvilIcons name='search' size={45} color='black' onPress={() => { this.onSearch(); this.setState({challengedisplay: false}); this.setState({frienddisplay: false}); }}/>
             </View>
 
         
