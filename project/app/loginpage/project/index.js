@@ -5,7 +5,7 @@ import { Input } from 'react-native-elements';
 
 
 import { connect } from 'react-redux';
-import { loginUser , userMoney } from '../../redux/actions'; 
+import { loginUser , userMoney , userTodays } from '../../redux/actions'; 
 
 var valid;
 const data = [
@@ -43,6 +43,7 @@ class Login extends Component {
         if (response.status === "true") {
           this.props.loginUser(this.state.Username); //username saver this.props.user.username
           this.props.userMoney(response.currency); //money saved this.props.user.money
+          this.props.userTodays(69); // this will eventually be whats pulled from the fitbit 
           this.props.unMount();
         } else {
           alert("Invalid login info. Try again.");
@@ -189,7 +190,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   loginUser,
-  userMoney
+  userMoney,
+  userTodays
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

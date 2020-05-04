@@ -40,6 +40,7 @@ class CalorieCounter extends Component {
     }).then((response) => response.json())
       .then((res) => {
           this.setState({Money: res.money})
+          this.setState({Todays: this.props.user.todays})
           this.props.userMoney(this.state.Money); //money saved this.props.user.money
       })
   }
