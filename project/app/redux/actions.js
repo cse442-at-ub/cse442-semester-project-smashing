@@ -24,6 +24,19 @@ export const userMoney = (money)=>({
     }
 });
 
+
+/**
+ * Stores todays earnings to redux store
+ * 
+ * @param {Number} todays
+ */
+export const userTodays = (todays)=>({
+    type: Actions.USER_TODAYS,
+    payload: {
+        todays
+    }
+});
+
 /**
  * Stores the stats into redux database
  * 
