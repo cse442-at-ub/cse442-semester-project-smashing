@@ -99,6 +99,7 @@ class Stats extends Component {
         AGI: this.state.currentStats["AGI"],
         SPD: this.state.currentStats["SPD"],
         DRN: this.state.currentStats["DRN"],
+        Money: this.state.currentStats["Money"],
         User: this.props.user.username,
 
         message: '',
