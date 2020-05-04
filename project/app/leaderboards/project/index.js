@@ -9,7 +9,6 @@ export default class leaderboards extends Component {
 state = {
   data: DATA
 };
-
 // componentDidMount() {
 //   // simulate new users being added to leaderboard
 //   setInterval(() => {
